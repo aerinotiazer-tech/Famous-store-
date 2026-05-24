@@ -1,0 +1,49 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A mobile device available for sale.",
+      "type": "object",
+      "properties": {
+        "slug": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "currency": { "type": "string" },
+        "condition": { "type": "string", "enum": ["A+", "A", "B", "C"] },
+        "batteryHealth": { "type": "number" },
+        "storage": { "type": "string" },
+        "color": { "type": "string" },
+        "description": { "type": "string" },
+        "images": { "type": "array", "items": { "type": "string" } },
+        "availability": { "type": "string", "enum": ["IN_STOCK", "OUT_OF_STOCK", "PREORDER"] },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["slug", "name", "price", "currency", "condition", "batteryHealth", "storage", "color", "description", "images", "availability", "featured", "createdAt"]
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "A customer inquiry about a specific product.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "message": { "type": "string" },
+        "productId": { "type": "string" },
+        "status": { "type": "string", "enum": ["new", "read", "closed"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "phone", "message", "productId", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "products": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Collection of products available in the store."
+    },
+    "inquiries": {
+      "schema": { "$ref": "#/entities/Inquiry" },
+      "description": "Collection of customer inquiries."
+    }
+  }
+}

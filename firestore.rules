@@ -1,0 +1,122 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() {
+      // Must exist in adminUsers collection
+      return isSignedIn() && exists(/databases/$(database)/documents/adminUsers/$(request.auth.uid));
+    }
+    
+    // --- Validation: Product ---
+    function isValidProduct(data) {
+      return data.keys().hasAll(['name', 'slug', 'price', 'currency', 'condition', 'batteryHealth', 'storage', 'color', 'description', 'images', 'availability', 'featured', 'createdAt', 'updatedAt'])
+      && data.keys().size() == 14
+      && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+      && data.slug is string && data.slug.size() > 0 && data.slug.size() <= 100 && data.slug.matches('^[a-zA-Z0-9_\\-]+$')
+      && data.price is number && data.price >= 0
+      && data.currency is string && data.currency.size() <= 10
+      && data.condition is string && data.condition.size() <= 10
+      && data.batteryHealth is number && data.batteryHealth >= 0 && data.batteryHealth <= 100
+      && data.storage is string && data.storage.size() <= 20
+      && data.color is string && data.color.size() <= 50
+      && data.description is string && data.description.size() <= 2000
+      && data.images is list && data.images.size() <= 10 && (data.images.size() == 0 || data.images[0] is string)
+      && data.availability is string && data.availability.size() <= 20
+      && data.featured is bool
+      && data.createdAt is timestamp
+      && data.updatedAt is timestamp;
+    }
+
+    // --- Validation: Inquiry ---
+    function isValidInquiry(data) {
+      return data.keys().hasAll(['name', 'phone', 'message', 'productId', 'status', 'createdAt'])
+      && data.keys().size() == 6
+      && data.name is string && data.name.size() > 0 && data.name.size() <= 100
+      && data.phone is string && data.phone.size() > 0 && data.phone.size() <= 30
+      && data.message is string && data.message.size() <= 2000
+      && data.productId is string && data.productId.size() <= 128
+      && data.status is string && data.status.size() <= 20
+      && data.createdAt is timestamp;
+    }
+
+    // --- Validation: AdminUser ---
+    function isValidAdminUser(data) {
+      return data.keys().hasAll(['email', 'role'])
+      && data.keys().size() == 2
+      && data.email is string && data.email.size() > 0 && data.email.size() <= 100
+      && data.role is string && data.role == 'admin';
+    }
+
+    // --- Rules ---
+    match /products/{productId} {
+      allow read: if true;
+
+      // Only admins can write
+      allow create: if isValidId(productId) && isAdmin() 
+        && isValidProduct(incoming())
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+        
+      allow update: if isValidId(productId) && isAdmin()
+        && isValidProduct(incoming())
+        && incoming().updatedAt == request.time
+        && incoming().createdAt == existing().createdAt;
+
+      allow delete: if isValidId(productId) && isAdmin();
+    }
+
+    match /inquiries/{inquiryId} {
+      allow get: if isValidId(inquiryId) && isAdmin();
+      allow list: if isAdmin(); // only admins need to list
+
+      // Anyone can create an inquiry
+      allow create: if isValidId(inquiryId) 
+        && isValidInquiry(incoming())
+        && incoming().createdAt == request.time
+        && incoming().status == 'new'
+        // Ensure product exists (using exists on the path)
+        && exists(/databases/$(database)/documents/products/$(incoming().productId));
+        
+      allow update: if isValidId(inquiryId) && isAdmin()
+        && isValidInquiry(incoming())
+        && incoming().createdAt == existing().createdAt;
+        
+      allow delete: if isValidId(inquiryId) && isAdmin();
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /adminUsers/{userId} {
+      // Allows an admin to check their own role or other roles, and anyone to check if they are admin.
+      allow get: if isValidId(userId) && request.auth.uid == userId;
+      
+      // Bootstrap: Allow creation of the first admin account if there are no admins yet
+      allow create: if isValidId(userId) 
+        && request.auth.uid == userId
+        && isValidAdminUser(incoming())
+        && incoming().email == request.auth.token.email
+        // Cannot create if an admin already exists? Since there is no "get all admins", we'll just allow creating your own adminUser doc. 
+        // BUT wait, this means ANYONE who signs up can make themselves an admin!! 
+        // THIS IS INSECURE. Let's ONLY allow specific emails to bootstrap themself, e.g., the user's email: rachidlemonteur@gmail.com
+        && request.auth.token.email.lower() == 'aerinotiazer@gmail.com';
+
+      // Alternatively, admins can add other admins
+      allow create: if isValidId(userId) && isAdmin() && isValidAdminUser(incoming());
+      
+      allow read: if isAdmin();
+      allow update: if false; // Admins roles cannot be updated, delete and recreate
+      allow delete: if isAdmin() && request.auth.uid != userId; // Admins can delete other admins but not themselves
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": " Famous Store",
+  "description": "Premium smartphone resale website for Famous Store, featuring minimal design and direct WhatsApp purchasing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
