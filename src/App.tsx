@@ -9,11 +9,8 @@ import ProtectedRoute from './components/admin/ProtectedRoute';
 // Public Pages
 import HomePage from './pages/HomePage';
 import StorePage from './pages/StorePage';
-import ProductPage from './pages/ProductPage';
 import AboutPage from './pages/AboutPage';
 import FAQPage from './pages/FAQPage';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
 
 // Admin Pages
 import AdminLoginPage from './pages/admin/LoginPage';
@@ -21,6 +18,7 @@ import DashboardPage from './pages/admin/DashboardPage';
 import ProductsPage from './pages/admin/ProductsPage';
 import ContentPage from './pages/admin/ContentPage';
 import SettingsPage from './pages/admin/SettingsPage';
+import UsersPage from './pages/admin/UsersPage';
 
 export default function App() {
   return (
@@ -33,11 +31,8 @@ export default function App() {
               <Route path="/" element={<Layout />}>
                 <Route index element={<HomePage />} />
                 <Route path="store" element={<StorePage />} />
-                <Route path="product/:id" element={<ProductPage />} />
                 <Route path="about" element={<AboutPage />} />
                 <Route path="faq" element={<FAQPage />} />
-                <Route path="login" element={<LoginPage />} />
-                <Route path="signup" element={<SignupPage />} />
               </Route>
 
               {/* Auth specific admin */}
@@ -50,6 +45,7 @@ export default function App() {
                   <Route path="dashboard" element={<DashboardPage />} />
                   <Route path="products" element={<ProductsPage />} />
                   <Route path="content" element={<ContentPage />} />
+                  <Route path="users" element={<UsersPage />} />
                   <Route path="settings" element={<SettingsPage />} />
                 </Route>
               </Route>

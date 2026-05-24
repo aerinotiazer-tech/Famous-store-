@@ -128,7 +128,7 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
                 </p>
                 <button
                   onClick={handleCheckout}
-                  className="w-full bg-whatsapp-green hover:bg-[#1EBE5A] text-white font-medium py-4 rounded-xl transition-colors duration-200 shadow-lg shadow-whatsapp-green/20"
+                  className="w-full bg-[#25D366] hover:bg-[#1EBE5A] text-white font-medium py-3.5 rounded-xl transition-colors duration-200 shadow-lg shadow-[#25D366]/20 flex items-center justify-center gap-2"
                 >
                   Commander via WhatsApp
                 </button>

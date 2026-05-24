@@ -4,19 +4,26 @@ import { Search } from 'lucide-react';
 import { useProducts, staticProducts } from '../services/products';
 import ProductCard from '../components/ProductCard';
 
+type CategoryType = 'featured' | 'iphone' | 'android' | 'accessory';
+
 export default function StorePage() {
   const { products, loading } = useProducts();
   const displayProducts = products.length > 0 ? products : staticProducts;
   
-  const [activeTab, setActiveTab] = useState<'all' | 'iphone' | 'accessory'>('all');
+  const [activeTab, setActiveTab] = useState<CategoryType>('featured');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState<'newest' | 'price_asc' | 'price_desc'>('newest');
 
   const filteredProducts = useMemo(() => {
     let result = displayProducts;
     
-    if (activeTab !== 'all') {
+    if (activeTab !== 'featured') {
       result = result.filter(p => p.category === activeTab);
+    } else {
+      // If 'featured', maybe check for a featured flag or just show top items.
+      // Since we don't have a featured flag explicitly in all data yet, we can filter condition A+ or just return all for demo.
+      // Let's filter by the category "featured" if it exists, or simulated for demo.
+      result = result.filter(p => p.category === 'featured' || p.condition === 'A+');
     }
     
     if (searchQuery.trim() !== '') {
@@ -49,24 +56,30 @@ export default function StorePage() {
               Inventaire de la Boutique
             </h1>
             <p className="text-lg text-neutral-500 dark:text-neutral-400">
-              Parcourez notre sélection actuelle d'appareils Apple vérifiés et d'accessoires. Sécurisez votre commande via WhatsApp.
+              Parcourez notre sélection actuelle d'appareils vérifiés et d'accessoires. Sécurisez votre commande via WhatsApp.
             </p>
           </div>
           
           <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
             {/* Tabs */}
-            <div className="flex items-center gap-2 bg-white dark:bg-neutral-900 p-1.5 rounded-xl border border-neutral-200 dark:border-neutral-800 w-fit">
+            <div className="flex items-center gap-2 bg-white dark:bg-neutral-900 p-1.5 rounded-xl border border-neutral-200 dark:border-neutral-800 w-fit overflow-x-auto whitespace-nowrap">
               <button 
-                onClick={() => setActiveTab('all')}
-                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'all' ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'}`}
+                onClick={() => setActiveTab('featured')}
+                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'featured' ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'}`}
               >
-                Tous les Modèles
+                Populaire
               </button>
               <button 
                 onClick={() => setActiveTab('iphone')}
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'iphone' ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'}`}
               >
                 iPhone
+              </button>
+              <button 
+                onClick={() => setActiveTab('android')}
+                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'android' ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'}`}
+              >
+                Android
               </button>
               <button 
                 onClick={() => setActiveTab('accessory')}

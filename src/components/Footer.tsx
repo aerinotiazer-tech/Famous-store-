@@ -41,7 +41,7 @@ export default function Footer() {
                 Niamey, Niger
               </li>
               <li>
-                <a href={`https://wa.me/${cleanNumber}`} className="text-sm text-whatsapp-green hover:text-whatsapp-green-hover font-medium transition-colors">
+                <a href={`https://wa.me/${cleanNumber}`} className="text-sm text-[#25D366] hover:text-[#1EBE5A] font-medium transition-colors">
                   WhatsApp: {settings.whatsappNumber || '+227 99 36 86 34'}
                 </a>
               </li>

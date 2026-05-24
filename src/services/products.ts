@@ -10,7 +10,7 @@ export interface Product {
   storage: string;
   batteryHealth: number;
   imageUrl: string;
-  category: 'iphone' | 'accessory' | 'ipad' | 'macbook';
+  category: 'iphone' | 'accessory' | 'ipad' | 'macbook' | 'android' | 'featured';
   createdAt?: string;
 }
 
@@ -53,14 +53,14 @@ export const staticProducts: Product[] = [
     imageUrl: "https://images.unsplash.com/photo-1678652197831-2d180705cd2c?auto=format&fit=crop&q=80&w=800"
   },
   {
-    id: "iphone-12",
-    name: "iPhone 12",
-    price: 220000,
-    condition: "B",
-    storage: "64GB",
-    batteryHealth: 88,
-    category: "iphone",
-    imageUrl: "https://images.unsplash.com/photo-1605236453806-6ff36851218e?auto=format&fit=crop&q=80&w=800"
+    id: "samsung-s23-ultra",
+    name: "Samsung Galaxy S23 Ultra",
+    price: 620000,
+    condition: "A+",
+    storage: "512GB",
+    batteryHealth: 98,
+    category: "android",
+    imageUrl: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "iphone-15-pro-max",
@@ -69,7 +69,7 @@ export const staticProducts: Product[] = [
     condition: "A+",
     storage: "256GB",
     batteryHealth: 100,
-    category: "iphone",
+    category: "featured",
     imageUrl: "https://images.unsplash.com/photo-1696446701796-da61225697cc?auto=format&fit=crop&q=80&w=800"
   },
   {

@@ -101,7 +101,7 @@ export default function Navbar() {
                   )}
                 </div>
               ) : (
-                <Link to="/login" className="p-2 text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-colors">
+                <Link to="/admin/login" className="p-2 text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-colors">
                   <User size={20} />
                 </Link>
               )}
@@ -182,8 +182,8 @@ export default function Navbar() {
                   </button>
                 </>
               ) : (
-                <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-neutral-700 dark:text-neutral-300 flex items-center gap-2 py-2 hover:text-primary-blue">
-                  <User size={18} /> <span className="font-medium">Se connecter</span>
+                <Link to="/admin/login" onClick={() => setIsMobileMenuOpen(false)} className="text-neutral-700 dark:text-neutral-300 flex items-center gap-2 py-2 hover:text-primary-blue">
+                  <User size={18} /> <span className="font-medium">Admin</span>
                 </Link>
               )}
             </div>
