@@ -24,9 +24,9 @@ export default function ProductPage() {
   if (!product) {
     return (
       <div className="min-h-screen pt-32 pb-24 flex flex-col items-center justify-center dark:bg-black text-center">
-        <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">Product Not Found</h2>
+        <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">Produit Non Trouvé</h2>
         <Link to="/store" className="text-primary-blue hover:underline flex items-center gap-2">
-          <ArrowLeft size={16} /> Back to Store
+          <ArrowLeft size={16} /> Retour à la Boutique
         </Link>
       </div>
     );
@@ -36,7 +36,7 @@ export default function ProductPage() {
     <div className="min-h-screen bg-neutral-50 dark:bg-black pt-24 pb-24 px-4 sm:px-6 lg:px-8 transition-colors">
       <div className="max-w-6xl mx-auto">
         <Link to="/store" className="inline-flex items-center gap-2 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors mb-8 font-medium">
-          <ArrowLeft size={16} /> Back to Store
+          <ArrowLeft size={16} /> Retour à la Boutique
         </Link>
 
         <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl overflow-hidden">
@@ -90,8 +90,8 @@ export default function ProductPage() {
                        <ShieldCheck size={20} />
                      </div>
                      <div>
-                       <p className="text-sm font-medium text-neutral-900 dark:text-white">Original parts</p>
-                       <p className="text-xs text-neutral-500 dark:text-neutral-400">Verified by experts</p>
+                       <p className="text-sm font-medium text-neutral-900 dark:text-white">Pièces d'origine</p>
+                       <p className="text-xs text-neutral-500 dark:text-neutral-400">Vérifié par des experts</p>
                      </div>
                    </div>
                    <div className="flex items-center gap-3">
@@ -99,8 +99,8 @@ export default function ProductPage() {
                        <Battery size={20} />
                      </div>
                      <div>
-                       <p className="text-sm font-medium text-neutral-900 dark:text-white">Guaranteed Battery</p>
-                       <p className="text-xs text-neutral-500 dark:text-neutral-400">{product.batteryHealth}% max capacity</p>
+                       <p className="text-sm font-medium text-neutral-900 dark:text-white">Batterie Garantie</p>
+                       <p className="text-xs text-neutral-500 dark:text-neutral-400">{product.batteryHealth}% capacité max</p>
                      </div>
                    </div>
                    <div className="flex items-center gap-3">
@@ -108,8 +108,8 @@ export default function ProductPage() {
                        <Zap size={20} />
                      </div>
                      <div>
-                       <p className="text-sm font-medium text-neutral-900 dark:text-white">Ready to connect</p>
-                       <p className="text-xs text-neutral-500 dark:text-neutral-400">Unlocked & Restored</p>
+                       <p className="text-sm font-medium text-neutral-900 dark:text-white">Prêt à l'emploi</p>
+                       <p className="text-xs text-neutral-500 dark:text-neutral-400">Débloqué & Restauré</p>
                      </div>
                    </div>
                 </div>
@@ -119,7 +119,7 @@ export default function ProductPage() {
                     onClick={() => addItem(product)}
                     className="w-full bg-primary-blue hover:bg-primary-blue-hover text-white py-4 rounded-xl font-medium text-lg flex items-center justify-center gap-2 transition-colors shadow-lg shadow-primary-blue/25"
                   >
-                    <ShoppingCart size={20} /> Add to Cart
+                    <ShoppingCart size={20} /> Ajouter au Panier
                   </button>
                 </div>
               </motion.div>

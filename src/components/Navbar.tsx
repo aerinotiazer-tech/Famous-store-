@@ -9,9 +9,9 @@ import { auth } from '../lib/firebase';
 import CartDrawer from './CartDrawer';
 
 const navLinks = [
-  { name: 'Home', path: '/' },
-  { name: 'Store', path: '/store' },
-  { name: 'About', path: '/about' },
+  { name: 'Accueil', path: '/' },
+  { name: 'Boutique', path: '/store' },
+  { name: 'À Propos', path: '/about' },
   { name: 'FAQ', path: '/faq' },
 ];
 
@@ -78,7 +78,7 @@ export default function Navbar() {
                       <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)}></div>
                       <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-neutral-900 rounded-xl shadow-lg border border-neutral-200 dark:border-neutral-800 overflow-hidden z-50">
                         <div className="px-4 py-3 border-b border-neutral-100 dark:border-neutral-800">
-                          <p className="text-sm text-neutral-500 dark:text-neutral-400">Signed in as</p>
+                          <p className="text-sm text-neutral-500 dark:text-neutral-400">Connecté en tant que</p>
                           <p className="text-sm font-medium text-neutral-900 dark:text-white truncate">{user.email}</p>
                         </div>
                         <div className="p-1">
@@ -87,13 +87,13 @@ export default function Navbar() {
                             onClick={() => setIsUserMenuOpen(false)}
                             className="flex items-center gap-2 px-3 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors"
                           >
-                            <ShieldUser size={16} /> Admin System
+                            <ShieldUser size={16} /> Système Admin
                           </Link>
                           <button 
                             onClick={handleLogout}
                             className="w-full text-left flex items-center gap-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors"
                           >
-                            Sign out
+                            Se déconnecter
                           </button>
                         </div>
                       </div>
@@ -171,19 +171,19 @@ export default function Navbar() {
               {user ? (
                 <>
                   <div className="px-2 py-3 mb-2 bg-neutral-50 dark:bg-neutral-900/50 rounded-xl">
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400 px-1">Signed in as</p>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 px-1">Connecté en tant que</p>
                     <p className="text-sm font-medium text-neutral-900 dark:text-white truncate px-1">{user.email}</p>
                   </div>
                   <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)} className="text-neutral-700 dark:text-neutral-300 flex items-center gap-2 py-2 hover:text-primary-blue">
-                    <ShieldUser size={18} /> <span className="font-medium">Admin System</span>
+                    <ShieldUser size={18} /> <span className="font-medium">Système Admin</span>
                   </Link>
                   <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="w-full text-left text-red-600 dark:text-red-400 flex items-center gap-2 py-2">
-                    <User size={18} /> <span className="font-medium">Sign Out</span>
+                    <User size={18} /> <span className="font-medium">Se déconnecter</span>
                   </button>
                 </>
               ) : (
                 <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-neutral-700 dark:text-neutral-300 flex items-center gap-2 py-2 hover:text-primary-blue">
-                  <User size={18} /> <span className="font-medium">Sign In</span>
+                  <User size={18} /> <span className="font-medium">Se connecter</span>
                 </Link>
               )}
             </div>

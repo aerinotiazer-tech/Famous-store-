@@ -4,7 +4,7 @@ import { useSettings } from '../services/settings';
 
 export default function Footer() {
   const { settings } = useSettings();
-  const cleanNumber = (settings.whatsappNumber || '+22790000000').replace(/[^0-9]/g, '');
+  const cleanNumber = (settings.whatsappNumber || '+22799368634').replace(/[^0-9]/g, '');
 
   return (
     <footer className="bg-white dark:bg-black border-t border-neutral-200 dark:border-neutral-900 py-12 md:py-16 transition-colors">
@@ -21,15 +21,15 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-neutral-500 dark:text-neutral-400 text-sm max-w-sm">
-              Premium certified pre-owned Apple devices in Niamey. Original products, guaranteed quality, and trusted service.
+              Appareils Apple d'occasion certifiés premium à Niamey. Produits originaux, qualité garantie et service de confiance.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-neutral-900 dark:text-white mb-4">Quick Links</h3>
+            <h3 className="font-semibold text-neutral-900 dark:text-white mb-4">Liens Rapides</h3>
             <ul className="space-y-3">
-              <li><Link to="/store" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">Store</Link></li>
-              <li><Link to="/about" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">About Us</Link></li>
+              <li><Link to="/store" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">Boutique</Link></li>
+              <li><Link to="/about" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">À Propos</Link></li>
               <li><Link to="/faq" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">FAQ</Link></li>
             </ul>
           </div>
@@ -42,7 +42,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href={`https://wa.me/${cleanNumber}`} className="text-sm text-whatsapp-green hover:text-whatsapp-green-hover font-medium transition-colors">
-                  WhatsApp: {settings.whatsappNumber || '+227 90 00 00 00'}
+                  WhatsApp: {settings.whatsappNumber || '+227 99 36 86 34'}
                 </a>
               </li>
             </ul>
@@ -51,7 +51,7 @@ export default function Footer() {
         
         <div className="mt-12 pt-8 border-t border-neutral-100 dark:border-neutral-800 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-neutral-400 dark:text-neutral-600">
-            &copy; {new Date().getFullYear()} Famous Store. All rights reserved.
+            &copy; {new Date().getFullYear()} Famous Store. Tous droits réservés.
           </p>
         </div>
       </div>

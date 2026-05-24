@@ -19,9 +19,9 @@ export default function SettingsPage() {
     setMessage('');
     try {
       await updateSettings({ whatsappNumber });
-      setMessage('Settings saved successfully.');
+      setMessage('Paramètres enregistrés avec succès.');
     } catch (err) {
-      setMessage('Failed to save settings.');
+      setMessage('Échec de l\'enregistrement des paramètres.');
     } finally {
       setIsSaving(false);
     }
@@ -30,7 +30,7 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-semibold text-white">System Settings</h1>
+        <h1 className="text-2xl font-semibold text-white">Paramètres du Système</h1>
       </div>
       
       <div className="bg-neutral-900 border border-neutral-800 p-6 rounded-2xl max-w-2xl">
@@ -42,7 +42,7 @@ export default function SettingsPage() {
           )}
           
           <div>
-             <label className="text-sm font-medium text-neutral-400 block mb-1.5">WhatsApp Admin Number</label>
+             <label className="text-sm font-medium text-neutral-400 block mb-1.5">Numéro WhatsApp Admin</label>
              <input 
                type="text" 
                className="w-full bg-black border border-neutral-800 rounded-xl px-4 py-3 text-white focus:border-neutral-600 focus:outline-none placeholder-neutral-700" 
@@ -51,7 +51,7 @@ export default function SettingsPage() {
                onChange={(e) => setWhatsappNumber(e.target.value)}
                disabled={settingsLoading}
              />
-             <p className="text-xs text-neutral-500 mt-2">All cart checkouts and inquiries will be routed to this number (include country code like +227).</p>
+             <p className="text-xs text-neutral-500 mt-2">Tous les paiements et demandes seront redirigés vers ce numéro (inclure l'indicatif du pays comme +227).</p>
           </div>
           <div className="pt-4 border-t border-neutral-800">
              <button 
@@ -59,7 +59,7 @@ export default function SettingsPage() {
                disabled={isSaving || settingsLoading}
                className="bg-primary-blue hover:bg-primary-blue-hover text-white px-6 py-2.5 rounded-xl font-medium transition-colors disabled:opacity-50"
              >
-                {isSaving ? 'Saving...' : 'Save Settings'}
+                {isSaving ? 'Enregistrement...' : 'Enregistrer les paramètres'}
              </button>
           </div>
         </form>

@@ -8,10 +8,10 @@ export default function Sidebar() {
   const navigate = useNavigate();
 
   const links = [
-    { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
-    { name: 'Products', path: '/admin/products', icon: Package },
-    { name: 'Content', path: '/admin/content', icon: Edit3 },
-    { name: 'Settings', path: '/admin/settings', icon: Settings },
+    { name: 'Tableau de bord', path: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Produits', path: '/admin/products', icon: Package },
+    { name: 'Contenu', path: '/admin/content', icon: Edit3 },
+    { name: 'Paramètres', path: '/admin/settings', icon: Settings },
   ];
 
   const handleLogout = async () => {
@@ -25,7 +25,7 @@ export default function Sidebar() {
         <Link to="/" className="text-xl font-semibold tracking-tight text-white hover:opacity-80 transition-opacity">
           Famous Store <span className="text-primary-blue">72</span>
         </Link>
-        <p className="text-xs text-neutral-500 mt-1">Admin System</p>
+        <p className="text-xs text-neutral-500 mt-1">Système Admin</p>
       </div>
       
       <nav className="flex-1 px-4 space-y-1">
@@ -54,7 +54,7 @@ export default function Sidebar() {
           className="flex w-full items-center gap-3 px-3 py-2 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors text-sm font-medium"
         >
           <LogOut size={18} />
-          Sign Out
+          Se déconnecter
         </button>
       </div>
     </div>

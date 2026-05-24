@@ -10,6 +10,7 @@ export default function StorePage() {
   
   const [activeTab, setActiveTab] = useState<'all' | 'iphone' | 'accessory'>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortOption, setSortOption] = useState<'newest' | 'price_asc' | 'price_desc'>('newest');
 
   const filteredProducts = useMemo(() => {
     let result = displayProducts;
@@ -23,8 +24,15 @@ export default function StorePage() {
       result = result.filter(p => p.name.toLowerCase().includes(q));
     }
     
+    if (sortOption === 'price_asc') {
+      result = [...result].sort((a, b) => a.price - b.price);
+    } else if (sortOption === 'price_desc') {
+      result = [...result].sort((a, b) => b.price - a.price);
+    }
+    // "newest" defaults to the original array order which is already sorted
+    
     return result;
-  }, [displayProducts, activeTab, searchQuery]);
+  }, [displayProducts, activeTab, searchQuery, sortOption]);
 
   return (
     <div className="w-full bg-neutral-50 dark:bg-black min-h-screen pt-12 pb-24 px-4 sm:px-6 lg:px-8 transition-colors">
@@ -38,10 +46,10 @@ export default function StorePage() {
         >
           <div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white mb-4">
-              Store Inventory
+              Inventaire de la Boutique
             </h1>
             <p className="text-lg text-neutral-500 dark:text-neutral-400">
-              Browse our current selection of verified Apple devices and essential accessories. Secure your order via WhatsApp.
+              Parcourez notre sélection actuelle d'appareils Apple vérifiés et d'accessoires. Sécurisez votre commande via WhatsApp.
             </p>
           </div>
           
@@ -52,7 +60,7 @@ export default function StorePage() {
                 onClick={() => setActiveTab('all')}
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'all' ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'}`}
               >
-                All Models
+                Tous les Modèles
               </button>
               <button 
                 onClick={() => setActiveTab('iphone')}
@@ -64,22 +72,41 @@ export default function StorePage() {
                 onClick={() => setActiveTab('accessory')}
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'accessory' ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white'}`}
               >
-                Accessories
+                Accessoires
               </button>
             </div>
 
-            {/* Search */}
-            <div className="relative max-w-sm w-full">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search size={18} className="text-neutral-400" />
+            {/* Search & Sort */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+              {/* Sort */}
+              <div className="relative w-full sm:w-auto">
+                <select
+                  value={sortOption}
+                  onChange={(e) => setSortOption(e.target.value as any)}
+                  className="block w-full sm:w-auto pl-4 pr-10 py-2.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-400 dark:focus:border-neutral-600 transition-colors appearance-none cursor-pointer"
+                >
+                  <option value="newest">Plus récent</option>
+                  <option value="price_asc">Prix (Croissant)</option>
+                  <option value="price_desc">Prix (Décroissant)</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-neutral-500">
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                </div>
               </div>
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full pl-10 pr-4 py-2.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl text-neutral-900 dark:text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-400 dark:focus:border-neutral-600 transition-colors"
-              />
+              
+              {/* Search */}
+              <div className="relative w-full sm:w-64 lg:w-72">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search size={18} className="text-neutral-400" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Rechercher des produits..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="block w-full pl-10 pr-4 py-2.5 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl text-neutral-900 dark:text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-400 dark:focus:border-neutral-600 transition-colors"
+                />
+              </div>
             </div>
           </div>
         </motion.div>
@@ -110,7 +137,7 @@ export default function StorePage() {
             
             {filteredProducts.length === 0 && (
               <div className="text-center py-24 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-100 dark:border-neutral-800">
-                <p className="text-neutral-500 dark:text-neutral-400">No products available in this category.</p>
+                <p className="text-neutral-500 dark:text-neutral-400">Aucun produit disponible dans cette catégorie.</p>
               </div>
             )}
           </>

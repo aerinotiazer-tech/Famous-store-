@@ -43,7 +43,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
           
           <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
-            {product.storage} &bull; Unlocked
+            {product.storage} &bull; Débloqué
           </p>
 
           <div className="mt-auto pt-4 border-t border-neutral-100 dark:border-neutral-800 flex items-center justify-between">
@@ -57,7 +57,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               }}
               className="bg-neutral-900 hover:bg-primary-blue dark:bg-white dark:hover:bg-primary-blue text-white dark:text-neutral-900 dark:hover:text-white text-sm font-medium px-4 py-2 rounded-full transition-colors duration-200 shadow-sm flex items-center gap-2"
             >
-              <ShoppingCart size={16} /> <span className="hidden sm:inline">Add</span>
+              <ShoppingCart size={16} /> <span className="hidden sm:inline">Ajouter</span>
             </button>
           </div>
         </div>

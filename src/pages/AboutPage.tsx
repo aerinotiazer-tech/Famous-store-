@@ -12,10 +12,10 @@ export default function AboutPage() {
           className="max-w-3xl mx-auto space-y-6"
         >
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white">
-            About Famous Store
+            À Propos de Famous Store
           </h1>
           <p className="text-xl text-neutral-500 dark:text-neutral-400">
-            Bringing premium verified pre-owned Apple devices to Niamey.
+            Apporter des appareils Apple d'occasion vérifiés de qualité premium à Niamey.
           </p>
         </motion.div>
       </section>
@@ -24,13 +24,13 @@ export default function AboutPage() {
       <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <div className="prose prose-lg prose-neutral mx-auto text-neutral-600 dark:text-neutral-300">
           <p className="lead text-2xl font-medium text-neutral-900 dark:text-white mb-8">
-            We started Famous Store with a simple goal: to make high-quality, original Apple products accessible, transparent, and trustworthy in our local community.
+            Nous avons créé Famous Store avec un objectif simple : rendre les produits Apple originaux de haute qualité accessibles, transparents et dignes de confiance dans notre communauté locale.
           </p>
           <p className="mb-6">
-            The second-hand smartphone market is often filled with anxiety. Is the battery healthy? Are the parts original? Has it been repaired with third-party components? We eliminate these concerns entirely.
+            Le marché des smartphones d'occasion est souvent source d'anxiété. La batterie est-elle saine ? Les pièces sont-elles d'origine ? Ont-ils été réparés avec des composants tiers ? Nous éliminons entièrement ces inquiétudes.
           </p>
           <p>
-            Every phone we sell goes through a strict verification process. If it's an A+ grade, it looks and feels brand new. If it's a B grade, we tell you exactly why. We display battery health openly, and we never sell devices with mixed or non-authentic Apple parts. 
+            Chaque téléphone que nous vendons passe par un processus de vérification strict. S'il s'agit d'un grade A+, il a l'apparence et la sensation d'un neuf. S'il s'agit d'un grade B, nous vous disons exactement pourquoi. L'état de la santé de la batterie est affiché ouvertement et nous ne vendons jamais de téléphones avec des pièces Apple non authentiques ou mélangées.
           </p>
         </div>
       </section>
@@ -43,24 +43,24 @@ export default function AboutPage() {
                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-2 shadow-inner">
                 <ShieldCheck size={32} className="text-white" />
               </div>
-              <h3 className="text-xl font-semibold">Radical Transparency</h3>
-              <p className="text-neutral-400 max-w-xs">You get exactly what you see. No hidden defects, no exaggerated grades.</p>
+              <h3 className="text-xl font-semibold">Transparence Radicale</h3>
+              <p className="text-neutral-400 max-w-xs">Vous obtenez exactement ce que vous voyez. Aucun défaut caché, aucun grade exagéré.</p>
             </div>
             
              <div className="flex flex-col items-center space-y-4">
                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-2 shadow-inner">
                 <Award size={32} className="text-white" />
               </div>
-              <h3 className="text-xl font-semibold">Premium Quality</h3>
-              <p className="text-neutral-400 max-w-xs">We source only the best condition devices from trusted international distributors.</p>
+              <h3 className="text-xl font-semibold">Qualité Premium</h3>
+              <p className="text-neutral-400 max-w-xs">Nous nous approvisionnons uniquement en appareils dans le meilleur état possible, auprès de distributeurs internationaux de confiance.</p>
             </div>
 
             <div className="flex flex-col items-center space-y-4">
                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-2 shadow-inner">
                 <HeartHandshake size={32} className="text-white" />
               </div>
-              <h3 className="text-xl font-semibold">Local Trust</h3>
-              <p className="text-neutral-400 max-w-xs">Based in Niamey. Real people, simple communication via WhatsApp, reliable support.</p>
+              <h3 className="text-xl font-semibold">Confiance Locale</h3>
+              <p className="text-neutral-400 max-w-xs">Basé à Niamey. De vraies personnes, une communication simple via WhatsApp, un support fiable.</p>
             </div>
           </div>
         </div>

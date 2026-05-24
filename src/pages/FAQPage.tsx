@@ -4,24 +4,24 @@ import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
-    question: "Are your phones original?",
-    answer: "Yes, absolutely. We only sell 100% original, authentic Apple devices. We never sell phones that have been repaired with third-party components or mixed parts."
+    question: "Vos téléphones sont-ils d'origine ?",
+    answer: "Oui, absolument. Nous ne vendons que des appareils Apple 100% originaux et authentiques. Nous ne vendons jamais de téléphones qui ont été réparés avec des composants tiers ou des pièces mélangées."
   },
   {
-    question: "Do you offer a warranty?",
-    answer: "We offer a 7-day technical testing warranty on all devices to ensure all core hardware components (cameras, Face ID, touch, speakers) are functioning exactly as advertised."
+    question: "Offrez-vous une garantie ?",
+    answer: "Nous offrons une garantie technique de test de 7 jours sur tous les appareils pour s'assurer que tous les composants matériels de base (caméras, Face ID, tactile, haut-parleurs) fonctionnent exactement comme annoncé."
   },
   {
-    question: "How do I make a purchase?",
-    answer: "Purchasing is simple. Browse our store, find the phone you want, and click the 'Buy' card button. This will open a WhatsApp chat with us directly with the details of the phone. You can then arrange payment and pickup/delivery."
+    question: "Comment puis-je effectuer un achat ?",
+    answer: "L'achat est simple. Parcourez notre boutique, trouvez le téléphone que vous voulez, et ajoutez le au panier. Une fois votre sélection faite, le passage en caisse vous redirigera sur une discussion WhatsApp avec nous pour finaliser la commande."
   },
   {
-    question: "What does Grade A+ mean?",
-    answer: "Grade A+ indicates the device is in pristine, like-new condition with virtually no signs of wear. Grade A indicates excellent condition with perhaps microscopic, unnoticable wear. Grade B means good condition with some visible signs of normal use."
+    question: "Que signifie le Grade A+ ?",
+    answer: "Le Grade A+ indique que l'appareil est dans un état impeccable, comme neuf, avec pratiquement aucun signe d'usure. Le Grade A indique un excellent état avec peut-être une usure microscopique imperceptible. Le Grade B signifie un bon état avec quelques signes visibles d'utilisation normale."
   },
   {
-    question: "Do phones come with accessories?",
-    answer: "Unless specifically stated in the product description, our pre-owned devices are sold 'device only' to keep the price as low as possible. Authentic charging cables and adapters are sold separately."
+    question: "Les téléphones sont-ils livrés avec des accessoires ?",
+    answer: "Sauf mention expresse dans la description du produit, nos appareils d'occasion sont vendus 'appareil seul' pour maintenir le prix le plus bas possible. Les câbles de charge et adaptateurs authentiques sont vendus séparément."
   }
 ];
 
@@ -38,10 +38,10 @@ export default function FAQPage() {
           className="text-center space-y-4"
         >
           <h1 className="text-4xl font-bold tracking-tight text-neutral-900 dark:text-white">
-            Frequently Asked Questions
+            Foire Aux Questions
           </h1>
           <p className="text-lg text-neutral-500 dark:text-neutral-400">
-            Everything you need to know about our products and services.
+            Tout ce que vous devez savoir sur nos produits et services.
           </p>
         </motion.div>
 

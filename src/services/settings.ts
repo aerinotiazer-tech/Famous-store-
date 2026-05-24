@@ -7,7 +7,7 @@ export interface AppSettings {
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
-  whatsappNumber: '+22790000000',
+  whatsappNumber: '+22799368634',
 };
 
 export function useSettings() {

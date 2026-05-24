@@ -11,14 +11,14 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
   const handleCheckout = () => {
     if (items.length === 0) return;
     
-    let message = "Hello! I'd like to order the following from Famous Store 72 System:\n\n";
+    let message = "Bonjour ! J'aimerais commander les articles suivants sur Famous Store 72 System:\n\n";
     items.forEach(item => {
       message += `- ${item.quantity}x ${item.name} (${item.storage}, Grade ${item.condition}) - ${(item.price * item.quantity).toLocaleString()} FCFA\n`;
     });
-    message += `\n*Total: ${totalPrice.toLocaleString()} FCFA*`;
+    message += `\n*Total : ${totalPrice.toLocaleString()} FCFA*`;
     
     // Remove '+' and spaces for the URL
-    const cleanNumber = (settings.whatsappNumber || '+22790000000').replace(/[^0-9]/g, '');
+    const cleanNumber = (settings.whatsappNumber || '+22799368634').replace(/[^0-9]/g, '');
     const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
     
     window.open(whatsappUrl, '_blank');
@@ -47,7 +47,7 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
             <div className="flex items-center justify-between p-6 border-b border-neutral-100 dark:border-neutral-900">
               <h2 className="text-xl font-semibold text-neutral-900 dark:text-white flex items-center gap-2">
                 <ShoppingBag size={20} />
-                Your Cart
+                Votre Panier
               </h2>
               <button
                 onClick={onClose}
@@ -61,12 +61,12 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-neutral-500 dark:text-neutral-400 space-y-4">
                   <ShoppingBag size={48} className="opacity-20" />
-                  <p>Your cart is empty</p>
+                  <p>Votre panier est vide</p>
                   <button 
                     onClick={onClose}
                     className="text-primary-blue font-medium hover:underline"
                   >
-                    Continue Shopping
+                    Continuer vos achats
                   </button>
                 </div>
               ) : (
@@ -120,17 +120,17 @@ export default function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClo
             {items.length > 0 && (
               <div className="border-t border-neutral-100 dark:border-neutral-900 p-6 bg-neutral-50 dark:bg-black/50">
                 <div className="flex justify-between text-base font-medium text-neutral-900 dark:text-white mb-4">
-                  <p>Subtotal</p>
+                  <p>Sous-total</p>
                   <p>{totalPrice.toLocaleString()} FCFA</p>
                 </div>
                 <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-6">
-                  Checkout will redirect you directly to WhatsApp to complete your order.
+                  Le passage en caisse vous redirigera directement vers WhatsApp pour finaliser votre commande.
                 </p>
                 <button
                   onClick={handleCheckout}
                   className="w-full bg-whatsapp-green hover:bg-[#1EBE5A] text-white font-medium py-4 rounded-xl transition-colors duration-200 shadow-lg shadow-whatsapp-green/20"
                 >
-                  Checkout via WhatsApp
+                  Commander via WhatsApp
                 </button>
               </div>
             )}
