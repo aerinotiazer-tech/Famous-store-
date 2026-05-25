@@ -12,28 +12,28 @@ service cloud.firestore {
     function existing() { return resource.data; }
     function isSignedIn() { return request.auth != null; }
     function isAdmin() {
-      // Must exist in admins collection
-      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.token.email.lower()));
+      return isSignedIn() 
+        && request.auth.token.email != null 
+        && (
+          request.auth.token.email.lower() == 'aerinotiazer@gmail.com' ||
+          exists(/databases/$(database)/documents/admins/$(request.auth.token.email.lower()))
+        );
     }
     
     // --- Validation: Product ---
     function isValidProduct(data) {
-      return data.keys().hasAll(['name', 'slug', 'price', 'currency', 'condition', 'batteryHealth', 'storage', 'color', 'description', 'images', 'availability', 'featured', 'createdAt', 'updatedAt'])
-      && data.keys().size() == 14
-      && data.name is string && data.name.size() > 0 && data.name.size() <= 100
-      && data.slug is string && data.slug.size() > 0 && data.slug.size() <= 100 && data.slug.matches('^[a-zA-Z0-9_\\-]+$')
+      return data.keys().hasAll(['name', 'price', 'condition', 'batteryHealth', 'storage', 'imageUrl', 'category', 'isNew', 'createdAt', 'updatedAt'])
+      && data.keys().size() == 10
+      && data.name is string && data.name.size() > 0 && data.name.size() <= 150
       && data.price is number && data.price >= 0
-      && data.currency is string && data.currency.size() <= 10
-      && data.condition is string && data.condition.size() <= 10
+      && data.condition is string && data.condition.size() <= 20
       && data.batteryHealth is number && data.batteryHealth >= 0 && data.batteryHealth <= 100
-      && data.storage is string && data.storage.size() <= 20
-      && data.color is string && data.color.size() <= 50
-      && data.description is string && data.description.size() <= 2000
-      && data.images is list && data.images.size() <= 10 && (data.images.size() == 0 || data.images[0] is string)
-      && data.availability is string && data.availability.size() <= 20
-      && data.featured is bool
-      && data.createdAt is timestamp
-      && data.updatedAt is timestamp;
+      && data.storage is string && data.storage.size() <= 40
+      && data.imageUrl is string && data.imageUrl.size() <= 2500000
+      && data.category is string && data.category.size() <= 50
+      && data.isNew is bool
+      && data.createdAt is string && data.createdAt.size() <= 50
+      && data.updatedAt is string && data.updatedAt.size() <= 50;
     }
 
     // --- Validation: Inquiry ---
@@ -59,18 +59,15 @@ service cloud.firestore {
     // --- Rules ---
     match /products/{productId} {
       allow read: if true;
-
+ 
       // Only admins can write
       allow create: if isValidId(productId) && isAdmin() 
-        && isValidProduct(incoming())
-        && incoming().createdAt == request.time
-        && incoming().updatedAt == request.time;
+        && isValidProduct(incoming());
         
       allow update: if isValidId(productId) && isAdmin()
         && isValidProduct(incoming())
-        && incoming().updatedAt == request.time
         && incoming().createdAt == existing().createdAt;
-
+ 
       allow delete: if isValidId(productId) && isAdmin();
     }
 
@@ -100,13 +97,16 @@ service cloud.firestore {
 
     match /admins/{emailId} {
       // Allows an admin to check their own role or other roles, and anyone to check if they are admin.
-      allow get: if isValidEmailId(emailId) && isSignedIn() && (request.auth.token.email.lower() == emailId.lower() || isAdmin());
+      allow get: if isValidEmailId(emailId) && isSignedIn() && (
+        (request.auth.token.email != null && request.auth.token.email.lower() == emailId.lower()) 
+        || isAdmin()
+      );
       allow list: if isAdmin();
       
       // Bootstrap: Allow creation of 'aerinotiazer@gmail.com' or admin can add others
       allow create: if isValidEmailId(emailId) && isSignedIn() && (
         isAdmin() || 
-        (emailId.lower() == 'aerinotiazer@gmail.com' && request.auth.token.email.lower() == 'aerinotiazer@gmail.com')
+        (emailId.lower() == 'aerinotiazer@gmail.com' && request.auth.token.email != null && request.auth.token.email.lower() == 'aerinotiazer@gmail.com')
       ) && isValidAdmin(incoming());
       
       allow update: if false; // Admins roles cannot be updated, delete and recreate

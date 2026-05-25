@@ -11,7 +11,9 @@ export interface Product {
   batteryHealth: number;
   imageUrl: string;
   category: 'iphone' | 'accessory' | 'ipad' | 'macbook' | 'android' | 'featured';
+  isNew: boolean;
   createdAt?: string;
+  updatedAt?: string;
 }
 
 export function useProducts() {
@@ -21,7 +23,22 @@ export function useProducts() {
   useEffect(() => {
     const q = query(collection(db, 'products'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const prodData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Product));
+      const prodData = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          name: data.name || '',
+          price: data.price || 0,
+          condition: data.condition || 'A',
+          storage: data.storage || '',
+          batteryHealth: data.batteryHealth || 100,
+          imageUrl: data.imageUrl || '',
+          category: data.category || 'iphone',
+          isNew: data.isNew ?? false,
+          createdAt: data.createdAt,
+          updatedAt: data.updatedAt
+        } as Product;
+      });
       setProducts(prodData);
       setLoading(false);
     });
@@ -40,6 +57,7 @@ export const staticProducts: Product[] = [
     storage: "256GB",
     batteryHealth: 95,
     category: "iphone",
+    isNew: false,
     imageUrl: "https://images.unsplash.com/photo-1632661674596-df8be070a5c5?auto=format&fit=crop&q=80&w=800"
   },
   {
@@ -50,6 +68,7 @@ export const staticProducts: Product[] = [
     storage: "128GB",
     batteryHealth: 92,
     category: "iphone",
+    isNew: false,
     imageUrl: "https://images.unsplash.com/photo-1678652197831-2d180705cd2c?auto=format&fit=crop&q=80&w=800"
   },
   {
@@ -60,6 +79,7 @@ export const staticProducts: Product[] = [
     storage: "512GB",
     batteryHealth: 98,
     category: "android",
+    isNew: false,
     imageUrl: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=800"
   },
   {
@@ -70,6 +90,7 @@ export const staticProducts: Product[] = [
     storage: "256GB",
     batteryHealth: 100,
     category: "featured",
+    isNew: false,
     imageUrl: "https://images.unsplash.com/photo-1696446701796-da61225697cc?auto=format&fit=crop&q=80&w=800"
   },
   {
@@ -80,6 +101,7 @@ export const staticProducts: Product[] = [
     storage: "N/A",
     batteryHealth: 100,
     category: "accessory",
+    isNew: false,
     imageUrl: "https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?auto=format&fit=crop&q=80&w=800"
   }
 ];
