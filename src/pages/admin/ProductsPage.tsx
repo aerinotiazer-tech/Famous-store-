@@ -31,8 +31,8 @@ export default function ProductsPage() {
           imageUrl: data.imageUrl || '',
           category: data.category || 'iphone',
           isNew: data.isNew ?? false,
-          createdAt: data.createdAt,
-          updatedAt: data.updatedAt
+          createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt,
+          updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate().toISOString() : data.updatedAt
         } as Product;
       });
       setProducts(prodData);
@@ -49,7 +49,7 @@ export default function ProductsPage() {
       try {
         await deleteDoc(doc(db, 'products', id));
       } catch (e: any) {
-        handleFirestoreError(e, OperationType.DELETE, `products/${id}`);
+        alert("Erreur lors de la suppression: " + (e.message || "Erreur inconnue"));
       }
     }
   };
@@ -93,7 +93,7 @@ export default function ProductsPage() {
       setCurrentProduct(null);
     } catch (e: any) {
       console.error("Firestore Save Error:", e);
-      handleFirestoreError(e, OperationType.WRITE, `products/${docId}`);
+      alert("Erreur lors de la sauvegarde du produit. L'image est peut-être trop lourde ou vous n'avez pas les droits. Détails: " + (e.message || "Erreur inconnue"));
     }
   };
 
@@ -143,6 +143,10 @@ export default function ProductsPage() {
   const handleFileProcess = (file: File) => {
     if (!file.type.startsWith('image/')) {
       alert("Veuillez sélectionner un format d'image valide (PNG, JPG, JPEG, WEBP).");
+      return;
+    }
+    if (file.size > 800000) {
+      alert("Veuillez sélectionner une image de moins de 800 Ko (actuellement: " + (file.size / 1024).toFixed(0) + " Ko) pour ne pas saturer la base de données.");
       return;
     }
     setUploadLoading(true);

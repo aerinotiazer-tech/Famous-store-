@@ -35,8 +35,8 @@ export function useProducts() {
           imageUrl: data.imageUrl || '',
           category: data.category || 'iphone',
           isNew: data.isNew ?? false,
-          createdAt: data.createdAt,
-          updatedAt: data.updatedAt
+          createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt,
+          updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate().toISOString() : data.updatedAt
         } as Product;
       });
       setProducts(prodData);

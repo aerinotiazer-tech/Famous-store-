@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import type { Product } from '../services/products';
 import { useCart } from '../contexts/CartContext';
 import ProductDetailModal from './ProductDetailModal';
+import { ChevronRight } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -25,60 +26,62 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <>
       <motion.div 
         onClick={handleCardClick}
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.98 }}
+        whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="group flex flex-col cursor-pointer isolate"
+        className="group flex flex-col cursor-pointer isolate w-full"
       >
-        <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800 mb-6">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] bg-[#f5f5f7] dark:bg-[#1d1d1f] mb-6 flex items-center justify-center p-8 transition-colors">
           <motion.div
-            className="w-full h-full"
+            className="w-full h-full relative"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <img 
               src={product.imageUrl || "https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=800"} 
               alt={product.name}
-              className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal"
+              className="w-full h-full object-contain filter drop-shadow-xl select-none"
               loading="lazy"
               referrerPolicy="no-referrer"
             />
           </motion.div>
           
-          <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20">
+          <div className="absolute inset-x-0 bottom-0 p-6 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20 flex justify-center">
             <button
               onClick={handleAddToCart}
-              className="w-full bg-white/90 backdrop-blur-md text-black font-sans font-medium px-4 py-4 rounded-xl shadow-xl hover:bg-black hover:text-white transition-colors duration-300"
+              className="bg-black/80 dark:bg-white/90 backdrop-blur-md text-white dark:text-black font-sans text-sm font-medium px-6 py-3 rounded-full hover:scale-105 transition-transform duration-300 shadow-xl"
             >
               Ajouter au panier
             </button>
           </div>
-          
-          {/* subtle vignette */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 point-events-none" />
         </div>
         
-        <div className="flex flex-col gap-1">
-          <div className="flex justify-between items-start">
-            <h3 className="font-serif text-xl text-neutral-900 dark:text-white group-hover:text-luxury-accent transition-colors">
-              {product.name}
-            </h3>
-            <span className="font-sans text-sm font-medium text-neutral-500 mt-1">
-              {product.price.toLocaleString('fr-FR')} FCFA
+        <div className="flex flex-col items-center text-center px-2">
+          {product.isNew || product.condition === 'Neuf' ? (
+            <span className="font-sans text-[10px] font-bold tracking-widest text-[#0066cc] dark:text-[#2997ff] uppercase mb-2">
+              Nouveau
             </span>
-          </div>
+          ) : (
+            <span className="font-sans text-[10px] font-bold tracking-widest text-[#bf4800] dark:text-[#ff6b00] uppercase mb-2">
+              Reconditionné Grade {product.condition}
+            </span>
+          )}
           
-          <div className="flex items-center gap-3 font-sans text-xs uppercase tracking-widest text-neutral-400 mt-2">
-            <span>{product.storage || 'Standard'}</span>
-            <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-            <span>{product.isNew || product.condition === 'Neuf' ? 'Neuf' : `Grade ${product.condition}`}</span>
-            {product.batteryHealth && (
-               <>
-                 <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                 <span>BH {product.batteryHealth}%</span>
-               </>
-            )}
+          <h3 className="font-sans text-xl font-semibold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] mb-1">
+            {product.name}
+          </h3>
+          
+          <p className="font-sans text-sm text-[#86868b] dark:text-[#86868b] mb-3 max-w-[250px] truncate">
+            {product.storage ? `${product.storage} · ` : ''} {product.batteryHealth ? `Batterie ${product.batteryHealth}%` : "Vérifié 45 pts"}
+          </p>
+          
+          <span className="font-sans text-base font-medium text-[#1d1d1f] dark:text-[#f5f5f7]">
+            {product.price.toLocaleString('fr-FR')} FCFA
+          </span>
+          
+          <div className="mt-4 flex items-center justify-center text-[#0066cc] dark:text-[#2997ff] font-sans text-xs font-medium group-hover:underline">
+            Découvrir <ChevronRight size={14} className="ml-1" />
           </div>
         </div>
       </motion.div>

@@ -21,8 +21,8 @@ export default function SettingsPage() {
     try {
       await updateSettings({ whatsappNumber });
       setMessage('Paramètres enregistrés avec succès.');
-    } catch (err) {
-      setMessage('Échec de l\'enregistrement des paramètres.');
+    } catch (err: any) {
+      setMessage('Échec de l\'enregistrement des paramètres : ' + (err.message || 'Erreur rules'));
     } finally {
       setIsSaving(false);
     }

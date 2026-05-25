@@ -15,8 +15,8 @@ service cloud.firestore {
       return isSignedIn() 
         && request.auth.token.email != null 
         && (
-          request.auth.token.email.lower() == 'aerinotiazer@gmail.com' ||
-          exists(/databases/$(database)/documents/admins/$(request.auth.token.email.lower()))
+          request.auth.token.email == 'aerinotiazer@gmail.com' ||
+          exists(/databases/$(database)/documents/admins/$(request.auth.token.email))
         );
     }
     
@@ -32,8 +32,8 @@ service cloud.firestore {
       && data.imageUrl is string && data.imageUrl.size() <= 2500000
       && data.category is string && data.category.size() <= 50
       && data.isNew is bool
-      && data.createdAt is string && data.createdAt.size() <= 50
-      && data.updatedAt is string && data.updatedAt.size() <= 50;
+      && (data.createdAt is string || data.createdAt is timestamp)
+      && (data.updatedAt is string || data.updatedAt is timestamp);
     }
 
     // --- Validation: Inquiry ---
@@ -65,8 +65,7 @@ service cloud.firestore {
         && isValidProduct(incoming());
         
       allow update: if isValidId(productId) && isAdmin()
-        && isValidProduct(incoming())
-        && incoming().createdAt == existing().createdAt;
+        && isValidProduct(incoming());
  
       allow delete: if isValidId(productId) && isAdmin();
     }
@@ -98,7 +97,7 @@ service cloud.firestore {
     match /admins/{emailId} {
       // Allows an admin to check their own role or other roles, and anyone to check if they are admin.
       allow get: if isValidEmailId(emailId) && isSignedIn() && (
-        (request.auth.token.email != null && request.auth.token.email.lower() == emailId.lower()) 
+        (request.auth.token.email != null && request.auth.token.email == emailId) 
         || isAdmin()
       );
       allow list: if isAdmin();
@@ -106,11 +105,11 @@ service cloud.firestore {
       // Bootstrap: Allow creation of 'aerinotiazer@gmail.com' or admin can add others
       allow create: if isValidEmailId(emailId) && isSignedIn() && (
         isAdmin() || 
-        (emailId.lower() == 'aerinotiazer@gmail.com' && request.auth.token.email != null && request.auth.token.email.lower() == 'aerinotiazer@gmail.com')
+        (emailId == 'aerinotiazer@gmail.com' && request.auth.token.email != null && request.auth.token.email == 'aerinotiazer@gmail.com')
       ) && isValidAdmin(incoming());
       
       allow update: if false; // Admins roles cannot be updated, delete and recreate
-      allow delete: if isValidEmailId(emailId) && isAdmin() && emailId.lower() != 'aerinotiazer@gmail.com'; // Cannot delete master
+      allow delete: if isValidEmailId(emailId) && isAdmin() && emailId != 'aerinotiazer@gmail.com'; // Cannot delete master
     }
   }
 }
