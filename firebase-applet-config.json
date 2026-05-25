@@ -1,10 +1,9 @@
 {
-  "projectId": "valid-arcanum-s5xj8",
-  "appId": "1:131179060806:web:72191f99b6f9988d56b447",
-  "apiKey": "AIzaSyB2IwXtKxOx5xo-_TYB132F2gxAgFQ9EUM",
-  "authDomain": "valid-arcanum-s5xj8.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-0a535cd3-75e7-4ae2-9d6b-1feb1643c725",
-  "storageBucket": "valid-arcanum-s5xj8.firebasestorage.app",
-  "messagingSenderId": "131179060806",
+  "projectId": "famous-store-2e89f",
+  "appId": "1:434982956029:web:f3e6ab827d6e7cd3610794",
+  "apiKey": "AIzaSyAkgSbAdah2ZmsXixs5h5O3rJqTPlQGUfo",
+  "authDomain": "famous-store-2e89f.firebaseapp.com",
+  "storageBucket": "famous-store-2e89f.firebasestorage.app",
+  "messagingSenderId": "434982956029",
   "measurementId": ""
 }
