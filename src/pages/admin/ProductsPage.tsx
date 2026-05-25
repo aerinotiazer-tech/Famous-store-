@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Plus, Trash2, Edit, Package, UploadCloud, Image, Trash, X, Check, Eye, HelpCircle, Star, Sparkles, Battery, RefreshCw } from 'lucide-react';
 import { collection, query, orderBy, onSnapshot, doc, deleteDoc, setDoc } from 'firebase/firestore';
-import { db } from '../../lib/firebase';
+import { db, handleFirestoreError, OperationType } from '../../lib/firebase';
 import { type Product, staticProducts } from '../../services/products';
 
 export default function ProductsPage() {
@@ -37,6 +37,9 @@ export default function ProductsPage() {
       });
       setProducts(prodData);
       setLoading(false);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'products');
+      setLoading(false);
     });
     return unsubscribe;
   }, []);
@@ -46,7 +49,7 @@ export default function ProductsPage() {
       try {
         await deleteDoc(doc(db, 'products', id));
       } catch (e: any) {
-        alert('Erreur lors de la suppression: ' + e.message);
+        handleFirestoreError(e, OperationType.DELETE, `products/${id}`);
       }
     }
   };
@@ -60,6 +63,12 @@ export default function ProductsPage() {
       alert('Veuillez renseigner au moins le nom et le prix.');
       return;
     }
+
+    const docId = currentProduct.id || 
+      currentProduct.name.toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9\-]/g, '') + '-' + Date.now();
 
     try {
       const now = new Date().toISOString();
@@ -79,18 +88,12 @@ export default function ProductsPage() {
         updatedAt: now
       };
 
-      const docId = currentProduct.id || 
-        currentProduct.name.toLowerCase()
-          .trim()
-          .replace(/\s+/g, '-')
-          .replace(/[^a-z0-9\-]/g, '') + '-' + Date.now();
-
       await setDoc(doc(db, 'products', docId), productPayload);
       setIsEditing(false);
       setCurrentProduct(null);
     } catch (e: any) {
       console.error("Firestore Save Error:", e);
-      alert('Échec de la sauvegarde: ' + (e.message || 'Permissions insuffisantes ou format incorrect'));
+      handleFirestoreError(e, OperationType.WRITE, `products/${docId}`);
     }
   };
 
@@ -131,7 +134,7 @@ export default function ProductsPage() {
         }
         alert('Produits de démonstration importés avec succès ! Ils sont maintenant modifiables et supprimables de votre site.');
       } catch (e: any) {
-        alert('Erreur lors de l\'importation: ' + e.message);
+        handleFirestoreError(e, OperationType.WRITE, 'products/bootstrap');
       } finally {
         setLoading(false);
       }

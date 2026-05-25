@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import { db, handleFirestoreError, OperationType } from '../lib/firebase';
 
 export interface AppSettings {
   whatsappNumber: string;
@@ -20,6 +20,9 @@ export function useSettings() {
         setSettings({ ...DEFAULT_SETTINGS, ...docSnap.data() });
       }
       setLoading(false);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.GET, 'settings/general');
+      setLoading(false);
     });
 
     return unsubscribe;
@@ -29,8 +32,7 @@ export function useSettings() {
     try {
       await setDoc(doc(db, 'settings', 'general'), { ...settings, ...newSettings }, { merge: true });
     } catch (error) {
-      console.error('Failed to update settings', error);
-      throw error;
+      handleFirestoreError(error, OperationType.WRITE, 'settings/general');
     }
   };
 

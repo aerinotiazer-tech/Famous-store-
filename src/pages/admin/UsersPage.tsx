@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '../../lib/firebase';
+import { db, handleFirestoreError, OperationType } from '../../lib/firebase';
 import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore';
 import { Users, Trash2, Plus, ShieldAlert } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -36,7 +36,7 @@ export default function UsersPage() {
       })) as AdminUser[];
       setAdmins(adminList);
     } catch (err) {
-      console.error("Error fetching admins:", err);
+      handleFirestoreError(err, OperationType.LIST, 'admins');
     } finally {
       setLoading(false);
     }
@@ -50,8 +50,8 @@ export default function UsersPage() {
     setError('');
     setSuccess('');
     
+    const emailId = newEmail.toLowerCase().trim();
     try {
-      const emailId = newEmail.toLowerCase().trim();
       const newDocRef = doc(db, 'admins', emailId);
       await setDoc(newDocRef, {
         email: emailId,
@@ -61,7 +61,7 @@ export default function UsersPage() {
       setNewEmail('');
       fetchAdmins();
     } catch (err: any) {
-      setError(err.message || 'Erreur lors de l\'ajout.');
+      handleFirestoreError(err, OperationType.WRITE, `admins/${emailId}`);
     } finally {
       setIsAdding(false);
     }
@@ -78,7 +78,7 @@ export default function UsersPage() {
         await deleteDoc(doc(db, 'admins', id));
         fetchAdmins();
       } catch (err: any) {
-        setError(err.message || 'Erreur lors de la suppression.');
+        handleFirestoreError(err, OperationType.DELETE, `admins/${id}`);
       }
     }
   };

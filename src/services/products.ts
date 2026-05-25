@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import { db, handleFirestoreError, OperationType } from '../lib/firebase';
 
 export interface Product {
   id: string;
@@ -40,6 +40,9 @@ export function useProducts() {
         } as Product;
       });
       setProducts(prodData);
+      setLoading(false);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'products');
       setLoading(false);
     });
     return unsubscribe;
