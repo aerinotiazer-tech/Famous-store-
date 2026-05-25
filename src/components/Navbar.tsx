@@ -21,7 +21,7 @@ export default function Navbar() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
   const { totalItems } = useCart();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   const handleLogout = async () => {
     await auth.signOut();
@@ -82,13 +82,6 @@ export default function Navbar() {
                           <p className="text-sm font-medium text-neutral-900 dark:text-white truncate">{user.email}</p>
                         </div>
                         <div className="p-1">
-                          <Link 
-                            to="/admin" 
-                            onClick={() => setIsUserMenuOpen(false)}
-                            className="flex items-center gap-2 px-3 py-2 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg transition-colors"
-                          >
-                            <ShieldUser size={16} /> Système Admin
-                          </Link>
                           <button 
                             onClick={handleLogout}
                             className="w-full text-left flex items-center gap-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors"
@@ -100,11 +93,7 @@ export default function Navbar() {
                     </>
                   )}
                 </div>
-              ) : (
-                <Link to="/admin/login" className="p-2 text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-colors">
-                  <User size={20} />
-                </Link>
-              )}
+              ) : null}
 
               <button
                 onClick={() => setIsCartOpen(true)}
@@ -174,18 +163,11 @@ export default function Navbar() {
                     <p className="text-xs text-neutral-500 dark:text-neutral-400 px-1">Connecté en tant que</p>
                     <p className="text-sm font-medium text-neutral-900 dark:text-white truncate px-1">{user.email}</p>
                   </div>
-                  <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)} className="text-neutral-700 dark:text-neutral-300 flex items-center gap-2 py-2 hover:text-primary-blue">
-                    <ShieldUser size={18} /> <span className="font-medium">Système Admin</span>
-                  </Link>
                   <button onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} className="w-full text-left text-red-600 dark:text-red-400 flex items-center gap-2 py-2">
                     <User size={18} /> <span className="font-medium">Se déconnecter</span>
                   </button>
                 </>
-              ) : (
-                <Link to="/admin/login" onClick={() => setIsMobileMenuOpen(false)} className="text-neutral-700 dark:text-neutral-300 flex items-center gap-2 py-2 hover:text-primary-blue">
-                  <User size={18} /> <span className="font-medium">Admin</span>
-                </Link>
-              )}
+              ) : null}
             </div>
           </motion.div>
         )}
