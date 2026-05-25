@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Plus, Trash2, Edit, Package, UploadCloud, Image, Trash, X, Check, Eye, HelpCircle, Star, Sparkles, Battery, RefreshCw } from 'lucide-react';
 import { collection, query, orderBy, onSnapshot, doc, deleteDoc, setDoc } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../../lib/firebase';
-import { type Product, staticProducts } from '../../services/products';
+import { type Product } from '../../services/products';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -111,36 +111,6 @@ export default function ProductsPage() {
     setIsEditing(true);
   };
 
-  const handleBootstrap = async () => {
-    if (window.confirm('Voulez-vous importer les produits d\'origine de démonstration dans Firestore pour pouvoir les modifier ou supprimer ?')) {
-      setLoading(true);
-      try {
-        const now = new Date().toISOString();
-        for (const p of staticProducts) {
-          const docId = p.id;
-          const payload = {
-            name: p.name,
-            price: p.price,
-            category: p.category,
-            condition: p.condition,
-            batteryHealth: p.batteryHealth,
-            storage: p.storage,
-            imageUrl: p.imageUrl,
-            isNew: p.isNew,
-            createdAt: now,
-            updatedAt: now
-          };
-          await setDoc(doc(db, 'products', docId), payload);
-        }
-        alert('Produits de démonstration importés avec succès ! Ils sont maintenant modifiables et supprimables de votre site.');
-      } catch (e: any) {
-        handleFirestoreError(e, OperationType.WRITE, 'products/bootstrap');
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
   // Drag and drop events logic
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -218,12 +188,6 @@ export default function ProductsPage() {
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           <button 
-            onClick={handleBootstrap}
-            className="w-full sm:w-auto bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white border border-neutral-700 font-bold px-4 py-3 rounded-xl text-sm transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer shadow-md"
-          >
-            <RefreshCw size={15} /> Importer produits démo
-          </button>
-          <button 
             onClick={openNew}
             id="admin_add_new_product_btn"
             className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 active:scale-95 cursor-pointer shadow-md"
@@ -244,14 +208,8 @@ export default function ProductsPage() {
             <Package size={24} />
           </div>
           <p className="font-bold text-white text-lg mb-1">Aucun produit en vitrine</p>
-          <p className="text-sm text-neutral-500 max-w-md mx-auto mb-6">Votre base de données Firestore est vide. Vous pouvez ajouter un article manuellement ou importer les produits originaux de démonstration.</p>
+          <p className="text-sm text-neutral-500 max-w-md mx-auto mb-6">Votre base de données Firestore est vide. Veuillez ajouter un premier article en vitrine pour commencer.</p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <button 
-              onClick={handleBootstrap}
-              className="bg-neutral-800 hover:bg-neutral-700 text-white font-semibold text-xs px-5 py-3 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
-            >
-              <RefreshCw size={13} /> Importer les produits démo
-            </button>
             <button 
               onClick={openNew}
               className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-5 py-3 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"

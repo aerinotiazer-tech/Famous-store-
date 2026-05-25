@@ -1,14 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search } from 'lucide-react';
-import { useProducts, staticProducts } from '../services/products';
+import { useProducts } from '../services/products';
 import ProductCard from '../components/ProductCard';
 
 type CategoryType = 'featured' | 'iphone' | 'android' | 'accessory';
 
 export default function StorePage() {
   const { products, loading } = useProducts();
-  const displayProducts = products.length > 0 ? products : staticProducts;
+  const displayProducts = products;
   
   const [activeTab, setActiveTab] = useState<CategoryType>('featured');
   const [searchQuery, setSearchQuery] = useState('');

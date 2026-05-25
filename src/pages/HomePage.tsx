@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { ArrowRight, ShieldCheck, Battery, Zap } from 'lucide-react';
 import { Link } from 'react-router';
-import { useProducts, staticProducts } from '../services/products';
+import { useProducts } from '../services/products';
 import { useSettings } from '../services/settings';
 import ProductCard from '../components/ProductCard';
 
@@ -9,8 +9,7 @@ export default function HomePage() {
   const { products, loading } = useProducts();
   const { settings } = useSettings();
   
-  const displayProducts = products.length > 0 ? products : staticProducts;
-  const featuredProducts = displayProducts.slice(0, 3);
+  const featuredProducts = products.slice(0, 3);
   
   const cleanNumber = (settings.whatsappNumber || '+22799368634').replace(/[^0-9]/g, '');
   const whatsappUrl = `https://wa.me/${cleanNumber}`;
@@ -131,11 +130,15 @@ export default function HomePage() {
              <div className="flex justify-center items-center py-12">     
                <div className="w-8 h-8 border-4 border-primary-blue border-t-transparent rounded-full animate-spin"></div>
              </div>
-          ) : (
+          ) : featuredProducts.length > 0 ? (
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                {featuredProducts.map((product) => (
                  <ProductCard key={product.id} product={product} />
                ))}
+             </div>
+          ) : (
+             <div className="text-center py-12 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-100 dark:border-neutral-800">
+               <p className="text-neutral-500 dark:text-neutral-400">Aucun produit disponible pour le moment. Revenez bientôt !</p>
              </div>
           )}
 
