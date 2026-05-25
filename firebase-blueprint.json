@@ -34,6 +34,16 @@
         "createdAt": { "type": "string" }
       },
       "required": ["name", "phone", "message", "productId", "status", "createdAt"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "An administrator authorized to manage store inventory.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "createdAt"]
     }
   },
   "firestore": {
@@ -44,6 +54,10 @@
     "inquiries": {
       "schema": { "$ref": "#/entities/Inquiry" },
       "description": "Collection of customer inquiries."
+    },
+    "admins": {
+      "schema": { "$ref": "#/entities/Admin" },
+      "description": "Collection of authorized administrators."
     }
   }
 }

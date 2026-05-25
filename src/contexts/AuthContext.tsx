@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth, db } from '../lib/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 interface AuthContextType {
   user: User | null;
@@ -20,13 +20,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser && currentUser.email) {
-        if (currentUser.email.toLowerCase() === 'aerinotiazer@gmail.com') {
+        const emailLower = currentUser.email.toLowerCase();
+        if (emailLower === 'aerinotiazer@gmail.com') {
           setIsAdmin(true);
         } else {
           try {
-            const adminQuery = query(collection(db, 'admins'), where('email', '==', currentUser.email));
-            const adminDocs = await getDocs(adminQuery);
-            setIsAdmin(!adminDocs.empty);
+            const adminDoc = await getDoc(doc(db, 'admins', emailLower));
+            setIsAdmin(adminDoc.exists());
           } catch (e) {
             setIsAdmin(false);
           }

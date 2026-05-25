@@ -7,12 +7,13 @@ service cloud.firestore {
 
     // --- Helpers ---
     function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function isValidEmailId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-+@\\.]+$'); }
     function incoming() { return request.resource.data; }
     function existing() { return resource.data; }
     function isSignedIn() { return request.auth != null; }
     function isAdmin() {
-      // Must exist in adminUsers collection
-      return isSignedIn() && exists(/databases/$(database)/documents/adminUsers/$(request.auth.uid));
+      // Must exist in admins collection
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.token.email.lower()));
     }
     
     // --- Validation: Product ---
@@ -47,12 +48,12 @@ service cloud.firestore {
       && data.createdAt is timestamp;
     }
 
-    // --- Validation: AdminUser ---
-    function isValidAdminUser(data) {
-      return data.keys().hasAll(['email', 'role'])
+    // --- Validation: Admin ---
+    function isValidAdmin(data) {
+      return data.keys().hasAll(['email', 'createdAt'])
       && data.keys().size() == 2
       && data.email is string && data.email.size() > 0 && data.email.size() <= 100
-      && data.role is string && data.role == 'admin';
+      && data.createdAt is string && data.createdAt.size() <= 100;
     }
 
     // --- Rules ---
@@ -97,26 +98,19 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    match /adminUsers/{userId} {
+    match /admins/{emailId} {
       // Allows an admin to check their own role or other roles, and anyone to check if they are admin.
-      allow get: if isValidId(userId) && request.auth.uid == userId;
+      allow get: if isValidEmailId(emailId) && isSignedIn() && (request.auth.token.email.lower() == emailId.lower() || isAdmin());
+      allow list: if isAdmin();
       
-      // Bootstrap: Allow creation of the first admin account if there are no admins yet
-      allow create: if isValidId(userId) 
-        && request.auth.uid == userId
-        && isValidAdminUser(incoming())
-        && incoming().email == request.auth.token.email
-        // Cannot create if an admin already exists? Since there is no "get all admins", we'll just allow creating your own adminUser doc. 
-        // BUT wait, this means ANYONE who signs up can make themselves an admin!! 
-        // THIS IS INSECURE. Let's ONLY allow specific emails to bootstrap themself, e.g., the user's email: rachidlemonteur@gmail.com
-        && request.auth.token.email.lower() == 'aerinotiazer@gmail.com';
-
-      // Alternatively, admins can add other admins
-      allow create: if isValidId(userId) && isAdmin() && isValidAdminUser(incoming());
+      // Bootstrap: Allow creation of 'aerinotiazer@gmail.com' or admin can add others
+      allow create: if isValidEmailId(emailId) && isSignedIn() && (
+        isAdmin() || 
+        (emailId.lower() == 'aerinotiazer@gmail.com' && request.auth.token.email.lower() == 'aerinotiazer@gmail.com')
+      ) && isValidAdmin(incoming());
       
-      allow read: if isAdmin();
       allow update: if false; // Admins roles cannot be updated, delete and recreate
-      allow delete: if isAdmin() && request.auth.uid != userId; // Admins can delete other admins but not themselves
+      allow delete: if isValidEmailId(emailId) && isAdmin() && emailId.lower() != 'aerinotiazer@gmail.com'; // Cannot delete master
     }
   }
 }

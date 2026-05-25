@@ -51,10 +51,10 @@ export default function UsersPage() {
     setSuccess('');
     
     try {
-      // Create a doc in admins with a random ID
-      const newDocRef = doc(collection(db, 'admins'));
+      const emailId = newEmail.toLowerCase().trim();
+      const newDocRef = doc(db, 'admins', emailId);
       await setDoc(newDocRef, {
-        email: newEmail.toLowerCase(),
+        email: emailId,
         createdAt: new Date().toISOString()
       });
       setSuccess('Administrateur ajouté avec succès.');

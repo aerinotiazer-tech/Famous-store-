@@ -29,7 +29,7 @@ export default function LoginPage() {
       const userEmail = userCredential.user.email?.toLowerCase();
       
       if (userEmail === 'aerinotiazer@gmail.com') {
-         await setDoc(doc(db, 'admins', 'master'), {
+         await setDoc(doc(db, 'admins', userEmail), {
              email: userEmail,
              createdAt: new Date().toISOString()
          });
@@ -37,14 +37,16 @@ export default function LoginPage() {
          return;
       }
       
-      const adminQuery = query(collection(db, 'admins'), where('email', '==', userCredential.user.email));
-      const adminDocs = await getDocs(adminQuery);
-      
-      if (adminDocs.empty) {
-         auth.signOut();
-         setError('Accès Refusé. Vous n\'êtes pas un admin.');
+      if (userEmail) {
+         const adminDoc = await getDoc(doc(db, 'admins', userEmail));
+         if (!adminDoc.exists()) {
+            await auth.signOut();
+            setError('Accès Refusé. Vous n\'êtes pas un admin.');
+         } else {
+            navigate('/admin/dashboard');
+         }
       } else {
-         navigate('/admin/dashboard');
+         setError('Une erreur est survenue.');
       }
     } catch (err: any) {
       setError(err.message || 'Échec de la connexion');
@@ -62,7 +64,7 @@ export default function LoginPage() {
       const userEmail = userCredential.user.email?.toLowerCase();
       
       if (userEmail === 'aerinotiazer@gmail.com') {
-         await setDoc(doc(db, 'admins', 'master'), {
+         await setDoc(doc(db, 'admins', userEmail), {
              email: userEmail,
              createdAt: new Date().toISOString()
          });
@@ -70,13 +72,16 @@ export default function LoginPage() {
          return;
       }
       
-      const adminQuery = query(collection(db, 'admins'), where('email', '==', userCredential.user.email));
-      const adminDocs = await getDocs(adminQuery);
-      if (adminDocs.empty) {
-         auth.signOut();
-         setError('Accès Refusé. Vous n\'êtes pas un admin.');
+      if (userEmail) {
+         const adminDoc = await getDoc(doc(db, 'admins', userEmail));
+         if (!adminDoc.exists()) {
+            await auth.signOut();
+            setError('Accès Refusé. Vous n\'êtes pas un admin.');
+         } else {
+            navigate('/admin/dashboard');
+         }
       } else {
-         navigate('/admin/dashboard');
+         setError('Une erreur est survenue.');
       }
     } catch (err: any) {
       if (err.code === 'auth/operation-not-allowed') {
