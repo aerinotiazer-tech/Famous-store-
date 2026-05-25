@@ -1,27 +1,27 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown } from 'lucide-react';
+import { Plus, Minus } from 'lucide-react';
 
 const faqs = [
   {
-    question: "Vos téléphones sont-ils d'origine ?",
-    answer: "Oui, absolument. Nous ne vendons que des appareils Apple 100% originaux et authentiques. Nous ne vendons jamais de téléphones qui ont été réparés avec des composants tiers ou des pièces mélangées."
+    question: "Quelle est la garantie de provenance ?",
+    answer: "Nous ne travaillons qu'avec un circuit d'approvisionnement extrêmement limité et vérifié. Chaque terminaux est un produit 100% original, n'ayant jamais subi de remplacement par des composants tiers ou non authentiques. La traçabilité est totale."
   },
   {
-    question: "Offrez-vous une garantie ?",
-    answer: "Nous offrons une garantie technique de test de 7 jours sur tous les appareils pour s'assurer que tous les composants matériels de base (caméras, Face ID, tactile, haut-parleurs) fonctionnent exactement comme annoncé."
+    question: "Offrez-vous une garantie de fonctionnement ?",
+    answer: "L'excellence implique la sérénité. Nous offrons une garantie technique incluse de 6 mois sur l'intégralité du matériel (carte mère, écran, capteurs biométriques). En cas de défaillance non liée à l'usure, le terminal est réparé ou remplacé."
   },
   {
-    question: "Comment puis-je effectuer un achat ?",
-    answer: "L'achat est simple. Parcourez notre boutique, trouvez le téléphone que vous voulez, et ajoutez le au panier. Une fois votre sélection faite, le passage en caisse vous redirigera sur une discussion WhatsApp avec nous pour finaliser la commande."
+    question: "Comment se déroule le processus d'acquisition ?",
+    answer: "L'expérience d'achat est fluide. Sélectionnez votre pièce, ajoutez-la à votre sélection, et un conseiller privé prendra en charge votre dossier via WhatsApp pour organiser la remise en main propre sécurisée ou la livraison selon vos convenances."
   },
   {
-    question: "Que signifie le Grade A+ ?",
-    answer: "Le Grade A+ indique que l'appareil est dans un état impeccable, comme neuf, avec pratiquement aucun signe d'usure. Le Grade A indique un excellent état avec peut-être une usure microscopique imperceptible. Le Grade B signifie un bon état avec quelques signes visibles d'utilisation normale."
+    question: "Que certifie précisément le Grade A+ ?",
+    answer: "Le Grade A+ est la plus haute distinction de l'occasion. Il certifie une intégrité cosmétique absolue (aucune micro-rayure visible à l'œil nu) et un fonctionnement clinique. Le Grade A tolère de microscopiques marques d'usure sur les tranches en titane ou aluminium."
   },
   {
-    question: "Les téléphones sont-ils livrés avec des accessoires ?",
-    answer: "Sauf mention expresse dans la description du produit, nos appareils d'occasion sont vendus 'appareil seul' pour maintenir le prix le plus bas possible. Les câbles de charge et adaptateurs authentiques sont vendus séparément."
+    question: "Le packaging d'origine est-il fourni ?",
+    answer: "Dans une démarche d'optimisation tarifaire stricte, les grades d'occasion sont fournis nus, seuls. Néanmoins, pour les grades «Neufs scellés», le packaging d'origine intégral Apple est conservé intact sous blister."
   }
 ];
 
@@ -29,45 +29,49 @@ export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <div className="w-full bg-neutral-50 dark:bg-black min-h-screen py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto space-y-12">
+    <div className="w-full bg-ivory dark:bg-neutral-900 min-h-screen pt-32 pb-32 px-6 lg:px-12 transition-colors">
+      <div className="max-w-3xl mx-auto space-y-16">
         
         <motion.div 
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-4"
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center space-y-6"
         >
-          <h1 className="text-4xl font-bold tracking-tight text-neutral-900 dark:text-white">
-            Foire Aux Questions
+          <span className="font-sans text-xs tracking-widest uppercase text-neutral-400 block">Sérénité & Confiance</span>
+          <h1 className="font-serif text-4xl md:text-6xl text-black dark:text-white">
+            Questions Fréquentes
           </h1>
-          <p className="text-lg text-neutral-500 dark:text-neutral-400">
-            Tout ce que vous devez savoir sur nos produits et services.
-          </p>
         </motion.div>
 
-        <div className="space-y-4">
+        <div className="space-y-2">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 key={index} 
-                className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden"
+                className="border-b border-black/5 dark:border-white/5 last:border-0"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none focus-visible:bg-neutral-50 dark:focus-visible:bg-neutral-800"
+                  className="w-full py-8 flex items-center justify-between text-left group"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-medium text-neutral-900 dark:text-neutral-100 text-lg">
+                  <span className={`font-serif text-xl md:text-2xl transition-colors ${isOpen ? 'text-black dark:text-white' : 'text-neutral-500 group-hover:text-black dark:group-hover:text-white'}`}>
                     {faq.question}
                   </span>
-                  <ChevronDown 
-                    size={20} 
-                    className={`text-neutral-400 transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}
-                  />
+                  <div className="w-8 h-8 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center flex-shrink-0 ml-4 group-hover:bg-black/5 dark:group-hover:bg-white/5 transition-colors">
+                    <motion.div
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-black dark:text-white"
+                    >
+                      {isOpen ? <Minus size={16} strokeWidth={1} /> : <Plus size={16} strokeWidth={1} />}
+                    </motion.div>
+                  </div>
                 </button>
                 <AnimatePresence initial={false}>
                   {isOpen && (
@@ -75,9 +79,9 @@ export default function FAQPage() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2, ease: 'easeInOut' }}
+                      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      <div className="px-6 pb-5 text-neutral-500 dark:text-neutral-400 leading-relaxed border-t border-neutral-100 dark:border-neutral-800 pt-4">
+                      <div className="pb-8 font-sans text-neutral-500 leading-relaxed pr-12">
                         {faq.answer}
                       </div>
                     </motion.div>

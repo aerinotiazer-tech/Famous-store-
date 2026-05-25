@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ShoppingCart, Star, Eye } from 'lucide-react';
 import type { Product } from '../services/products';
 import { useCart } from '../contexts/CartContext';
 import ProductDetailModal from './ProductDetailModal';
@@ -18,71 +17,68 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Avoid triggering details modal
+    e.stopPropagation();
     addItem(product);
   };
 
   return (
     <>
       <motion.div 
-        whileHover={{ y: -6, scale: 1.01 }}
         onClick={handleCardClick}
-        className="group bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800/80 overflow-hidden shadow-sm hover:shadow-xl dark:shadow-none transition-all duration-300 flex flex-col h-full cursor-pointer relative"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="group flex flex-col cursor-pointer isolate"
       >
-        <div className="aspect-[4/3] bg-neutral-100 dark:bg-neutral-950 relative overflow-hidden flex items-center justify-center p-6 select-none">
-          <img 
-            src={product.imageUrl} 
-            alt={product.name}
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-xl z-10"
-            loading="lazy"
-            referrerPolicy="no-referrer"
-          />
+        <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800 mb-6">
+          <motion.div
+            className="w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <img 
+              src={product.imageUrl || "https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=800"} 
+              alt={product.name}
+              className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal"
+              loading="lazy"
+              referrerPolicy="no-referrer"
+            />
+          </motion.div>
           
-          {/* Subtle Hover Overlay indicator */}
-          <div className="absolute inset-0 bg-neutral-950/0 group-hover:bg-neutral-950/5 dark:group-hover:bg-white/5 transition-all duration-300 flex items-center justify-center z-15">
-            <span className="opacity-0 group-hover:opacity-100 bg-white/90 dark:bg-neutral-900/90 backdrop-blur text-xs font-bold px-3.5 py-2 rounded-full text-neutral-900 dark:text-neutral-100 shadow-md flex items-center gap-1.5 transition-all transform translate-y-2 group-hover:translate-y-0">
-              <Eye size={13} /> Voir Détails
-            </span>
-          </div>
-
-          <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
-            {product.category === 'featured' && (
-               <span className="bg-amber-500/95 backdrop-blur-md text-xs font-semibold px-2.5 py-1 rounded-md text-white shadow-sm w-fit flex items-center gap-1">
-                 <Star size={11} fill="white" /> Populaire
-               </span>
-            )}
-            {product.condition && (
-              <span className="bg-white/95 dark:bg-black/95 backdrop-blur-md text-xs font-bold px-2.5 py-1 rounded-md text-neutral-900 dark:text-neutral-200 border border-neutral-200/50 dark:border-neutral-800/50 shadow-sm w-fit">
-                {product.isNew || product.condition === 'Neuf' ? '✨ Neuf' : `Grade ${product.condition}`}
-              </span>
-            )}
-            {product.batteryHealth && product.batteryHealth >= 90 && (
-               <span className="bg-emerald-500/95 dark:bg-emerald-500/85 backdrop-blur-md text-xs font-bold px-2.5 py-1 rounded-md text-white shadow-sm w-fit">
-                 BH {product.batteryHealth}%
-              </span>
-            )}
-          </div>
-        </div>
-        
-        <div className="p-5 flex flex-col flex-1 relative z-10 bg-white dark:bg-neutral-900">
-          <div className="flex justify-between items-start mb-1.5">
-            <h3 className="font-bold text-base sm:text-lg text-neutral-900 dark:text-white line-clamp-1 group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">{product.name}</h3>
-          </div>
-          
-          <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mb-3 font-medium">
-            {product.storage ? `${product.storage} • ` : ''}Agréé & Débloqué
-          </p>
-
-          <div className="mt-auto pt-4 border-t border-neutral-100 dark:border-neutral-800/80 flex items-center justify-between">
-            <span className="font-extrabold text-base sm:text-lg text-neutral-900 dark:text-white">
-              {product.price.toLocaleString()} FCFA
-            </span>
+          <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-20">
             <button
               onClick={handleAddToCart}
-              className="bg-neutral-900 hover:bg-black dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-900 text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full transition-colors duration-200 shadow-sm flex items-center gap-1.5 active:scale-95"
+              className="w-full bg-white/90 backdrop-blur-md text-black font-sans font-medium px-4 py-4 rounded-xl shadow-xl hover:bg-black hover:text-white transition-colors duration-300"
             >
-              <ShoppingCart size={15} /> <span>Ajouter</span>
+              Ajouter au panier
             </button>
+          </div>
+          
+          {/* subtle vignette */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 point-events-none" />
+        </div>
+        
+        <div className="flex flex-col gap-1">
+          <div className="flex justify-between items-start">
+            <h3 className="font-serif text-xl text-neutral-900 dark:text-white group-hover:text-luxury-accent transition-colors">
+              {product.name}
+            </h3>
+            <span className="font-sans text-sm font-medium text-neutral-500 mt-1">
+              {product.price.toLocaleString('fr-FR')} FCFA
+            </span>
+          </div>
+          
+          <div className="flex items-center gap-3 font-sans text-xs uppercase tracking-widest text-neutral-400 mt-2">
+            <span>{product.storage || 'Standard'}</span>
+            <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+            <span>{product.isNew || product.condition === 'Neuf' ? 'Neuf' : `Grade ${product.condition}`}</span>
+            {product.batteryHealth && (
+               <>
+                 <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                 <span>BH {product.batteryHealth}%</span>
+               </>
+            )}
           </div>
         </div>
       </motion.div>

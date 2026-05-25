@@ -1,5 +1,4 @@
 import { Link } from 'react-router';
-import { Smartphone } from 'lucide-react';
 import { useSettings } from '../services/settings';
 
 export default function Footer() {
@@ -7,52 +6,54 @@ export default function Footer() {
   const cleanNumber = (settings.whatsappNumber || '+22799368634').replace(/[^0-9]/g, '');
 
   return (
-    <footer className="bg-white dark:bg-black border-t border-neutral-200 dark:border-neutral-900 py-12 md:py-16 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-ivory dark:bg-black border-t border-black/5 dark:border-white/5 pt-32 pb-16 transition-colors">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 lg:gap-8 mb-32">
           
-          <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2 group w-fit">
-              <div className="bg-primary-blue p-1.5 rounded-lg text-white">
-                <Smartphone size={20} />
-              </div>
-              <span className="font-semibold text-lg tracking-tight text-neutral-900 dark:text-white">
+          <div className="md:col-span-6 space-y-6">
+            <Link to="/" className="inline-block group">
+              <span className="font-sans tracking-[0.2em] font-medium text-sm text-black dark:text-white uppercase">
                 Famous Store
               </span>
             </Link>
-            <p className="text-neutral-500 dark:text-neutral-400 text-sm max-w-sm">
-              Appareils Apple d'occasion certifiés premium à Niamey. Produits originaux, qualité garantie et service de confiance.
+            <p className="text-neutral-500 font-sans text-sm md:text-base max-w-sm font-light leading-relaxed">
+              La destination de référence pour l'acquisition d'appareils Apple d'exception.
             </p>
           </div>
 
-          <div>
-            <h3 className="font-semibold text-neutral-900 dark:text-white mb-4">Liens Rapides</h3>
-            <ul className="space-y-3">
-              <li><Link to="/store" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">Boutique</Link></li>
-              <li><Link to="/about" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">À Propos</Link></li>
-              <li><Link to="/faq" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">FAQ</Link></li>
+          <div className="md:col-span-3">
+            <h3 className="font-sans text-xs tracking-widest uppercase text-neutral-400 mb-6 font-medium">Navigation</h3>
+            <ul className="space-y-4">
+              <li><Link to="/store" className="font-sans text-sm text-black dark:text-white hover:text-luxury-accent transition-colors">La Collection</Link></li>
+              <li><Link to="/about" className="font-sans text-sm text-black dark:text-white hover:text-luxury-accent transition-colors">L'Héritage</Link></li>
+              <li><Link to="/faq" className="font-sans text-sm text-black dark:text-white hover:text-luxury-accent transition-colors">Assistance Privée</Link></li>
             </ul>
           </div>
 
-          <div>
-            <h3 className="font-semibold text-neutral-900 dark:text-white mb-4">Contact</h3>
-            <ul className="space-y-3">
-              <li className="text-sm text-neutral-500 dark:text-neutral-400">
+          <div className="md:col-span-3">
+            <h3 className="font-sans text-xs tracking-widest uppercase text-neutral-400 mb-6 font-medium">Contact</h3>
+            <ul className="space-y-4">
+              <li className="font-sans text-sm text-neutral-500">
                 Niamey, Niger
               </li>
               <li>
-                <a href={`https://wa.me/${cleanNumber}`} className="text-sm text-[#25D366] hover:text-[#1EBE5A] font-medium transition-colors">
-                  WhatsApp: {settings.whatsappNumber || '+227 99 36 86 34'}
+                <a href={`https://wa.me/${cleanNumber}`} className="font-sans text-sm text-black dark:text-white hover:text-luxury-accent transition-colors flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-luxury-accent block" /> Connecter
                 </a>
               </li>
             </ul>
           </div>
         </div>
         
-        <div className="mt-12 pt-8 border-t border-neutral-100 dark:border-neutral-800 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-neutral-400 dark:text-neutral-600">
-            &copy; {new Date().getFullYear()} Famous Store. Tous droits réservés.
+        <div className="pt-8 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <p className="font-sans text-xs text-neutral-400 tracking-wide">
+            &copy; {new Date().getFullYear()} Famous Store.
           </p>
+          <div className="flex gap-6">
+            <Link to="/admin/login" className="font-sans text-xs text-neutral-400 hover:text-black dark:hover:text-white transition-colors">
+              Portail
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

@@ -23,94 +23,50 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
     const name = product.name.toLowerCase();
     if (name.includes('iphone')) {
       return {
-        processor: name.includes('15') ? 'A17 Pro Bionic' : name.includes('14') ? 'A16 Bionic' : 'A15 Bionic',
-        screen: name.includes('max') ? '6.7" Super Retina XDR OLED' : '6.1" Super Retina XDR OLED',
-        camera: 'Triple capteur 48Mpx + Macro Pro' + (name.includes('max') ? ' (Zoom 5x)' : ' (Zoom 3x)'),
-        network: '5G ultra-rapide (eSIM & SIM physique)',
-        security: 'Face ID biométrique sécurisé',
-        weight: name.includes('max') ? '221g (Finition Titane/Acier)' : '187g (Design Premium)'
+        processor: name.includes('15') ? 'A17 Pro' : name.includes('14') ? 'A16 Bionic' : 'A15 Bionic',
+        screen: name.includes('max') ? '6.7" Super Retina XDR' : '6.1" Super Retina XDR',
+        camera: 'Triple capteur 48Mpx Pro',
+        network: '5G (eSIM & SIM)',
       };
     } else if (product.category === 'android' || name.includes('samsung') || name.includes('galaxy')) {
       return {
-        processor: 'Snapdragon 8 Gen 2 / Exynos 2300',
-        screen: '6.8" Dynamic AMOLED 2X 120Hz',
-        camera: 'Quadruple Capteur 200Mpx + Space Zoom 100x',
-        network: '5G, Wi-Fi 6E, Dual SIM',
-        security: 'Capteur d\'empreintes sous l\'écran & Reconnaissance faciale',
-        weight: '234g (Cadre Armor Aluminum)'
-      };
-    } else if (product.category === 'accessory' || name.includes('airpods')) {
-      return {
-        processor: 'Puce Apple H2 / Smart Audio Chip',
-        screen: 'Tactile intuitif & Capteurs de pression',
-        camera: 'Réduction Active du Bruit Pro & Transparence Adaptative',
-        network: 'Bluetooth 5.3 ultra-stable & Bascule automatique',
-        security: 'Localisation précise avec l\'application "Localiser"',
-        weight: '5.3g par écouteur, boîtier de charge premium'
+        processor: 'Snapdragon 8 Gen 2',
+        screen: '6.8" Dynamic AMOLED 2X',
+        camera: 'Quadruple Capteur 200Mpx',
+        network: '5G, Wi-Fi 6E',
       };
     }
     return {
-      processor: 'Puce haute performance intégrée',
-      screen: 'Écran Haute Définition calibré',
-      camera: 'Objectif optique optimisé',
-      network: 'Compatibilité réseau mondiale',
-      security: 'Protection biométrique des données',
-      weight: 'Poids optimisé pour un usage au quotidien'
+      processor: 'Puce intégrée avancée',
+      screen: 'Écran Haute Définition',
+      camera: 'Objectif optique',
+      network: 'Compatibilité mondiale',
     };
   };
 
   const specs = getSpecs();
 
-  // Helper text for condition classification
   const getConditionDetails = (grade: string) => {
     switch (grade) {
-      case 'Neuf':
-        return {
-          title: 'Scellé / Neuf',
-          description: 'L\'appareil est entièrement neuf, d\'origine fabricant, jamais déballé et scellé sous blister. Il bénéficie du meilleur état de fonctionnement théorique, fourni avec ses accessoires officiels d\'usine et ses composants d\'origine neufs.',
-          score: 10
-        };
-      case 'A+':
-        return {
-          title: 'Comme Neuf',
-          description: 'L\'appareil est dans un état esthétique irréprochable. Aucune rayure, marque ou micro-fissure sur l\'écran ou le châssis. Idéal pour offrir ou se faire plaisir comme avec un produit scellé.',
-          score: 10
-        };
-      case 'A':
-        return {
-          title: 'Excellent État',
-          description: 'L\'appareil a été très bien entretenu. L\'écran est entièrement exempt de rayures visibles. Il peut présenter d\'infimes traces d\'usage superficielles sur les côtés, invisibles à plus de 20cm.',
-          score: 9
-        };
-      case 'B':
-        return {
-          title: 'Très Bon État',
-          description: 'L\'appareil montre de légères micro-rayures sur l\'écran ou des traces d\'usage ordinaires sur les contours ou le dos de l\'appareil. L\'expérience d\'utilisation reste optimale pour un prix réduit.',
-          score: 8
-        };
-      default:
-        return {
-          title: 'Bon État Fonctionnel',
-          description: 'L\'appareil présente des marques d\'utilisation marquées ou micro-rayures visibles mais qui ne gênent en rien la lisibilité. Écran sans brisure de verre, testé à 100% sur 45 points clés.',
-          score: 7
-        };
+      case 'Neuf': return { title: 'Neuf scellé', desc: "L'appareil est entièrement neuf, jamais déballé et scellé sous blister. Excellence absolue." };
+      case 'A+': return { title: 'Comme Neuf', desc: "État esthétique irréprochable. Aucune trace d'usure. Ingénierie préservée à 100%." };
+      case 'A': return { title: 'Excellent', desc: "Entretien méticuleux. Écran parfait, infimes traces sur les tranches." };
+      default: return { title: 'Très Bon', desc: "Légères traces d'usage, expérience et intégrité structurelle conservées." };
     }
   };
 
   const conditionInfo = getConditionDetails(product.condition);
 
-  // Pre-fill WhatsApp URL
   const getWhatsAppLink = () => {
     const isNewLocal = product.isNew || product.condition === 'Neuf';
-    const conditionText = isNewLocal ? 'En boîte d\'origine scellée (Neuf)' : `Reconditionné - Grade ${product.condition}`;
+    const conditionText = isNewLocal ? 'Neuf' : `Grade ${product.condition}`;
     const batteryText = isNewLocal ? '100%' : `${product.batteryHealth}%`;
-    const message = `Bonjour ! Je suis intéressé(e) par l'appareil suivant disponible sur votre boutique :\n\n📱 *Appareil* : ${product.name}\n💾 *Stockage* : ${product.storage || 'Standard'}\n🔋 *Santé Batterie* : ${batteryText}\n⚖️ *État* : ${conditionText}\n💰 *Tarif* : ${product.price.toLocaleString()} FCFA\n\nEst-il toujours disponible pour une livraison ?`;
-    return `https://wa.me/2250700000000?text=${encodeURIComponent(message)}`; // Example default number or custom WA format
+    const message = `Bonjour,\n\nJe souhaite réserver :\n📱 ${product.name}\n💾 ${product.storage || 'Standard'} / 🔋 ${batteryText}\n⚖️ ${conditionText}\n💰 ${product.price.toLocaleString()} FCFA\n\nL'appareil est-il disponible ?`;
+    return `https://wa.me/2250700000000?text=${encodeURIComponent(message)}`;
   };
 
-  // Pre-fill direct copy text
   const handleShare = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/store?product=${product.id}`);
+    navigator.clipboard.writeText(`${window.location.origin}/store?highlight=${product.id}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -123,262 +79,167 @@ export default function ProductDetailModal({ product, isOpen, onClose }: Product
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-        {/* Backdrop overlay */}
+      <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center">
+        {/* Modern blur backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
           onClick={onClose}
-          className="fixed inset-0 bg-neutral-950/80 backdrop-blur-md"
+          className="absolute inset-0 bg-neutral-900/40 backdrop-blur-xl"
         />
 
-        {/* Modal Window Container */}
+        {/* Modal Window Container - Full height on mobile, cinematic card on desktop */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800/80 rounded-3xl w-full max-w-5xl overflow-hidden shadow-2xl relative flex flex-col md:flex-row h-full max-h-[90vh] md:max-h-[85vh] text-neutral-900 dark:text-neutral-100"
+          initial={{ opacity: 0, y: '100%', scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: '100%', scale: 0.95 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full h-[90vh] md:h-auto md:max-h-[85vh] max-w-6xl mx-4 bg-ivory dark:bg-neutral-900 md:rounded-[2.5rem] rounded-t-[2.5rem] overflow-hidden flex flex-col md:flex-row shadow-2xl isolate"
         >
-          {/* Close button inside modal corner top right */}
+          {/* Close trigger */}
           <button 
             onClick={onClose}
-            id="close_product_detail_modal_btn"
-            className="absolute top-4 right-4 z-20 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700/80 p-2.5 rounded-full text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-all cursor-pointer shadow-md"
+            className="absolute top-6 right-6 z-50 w-10 h-10 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 rounded-full flex items-center justify-center text-black dark:text-white transition-colors backdrop-blur-md"
           >
-            <X size={20} />
+            <X size={20} strokeWidth={1.5} />
           </button>
 
-          {/* Left Column: Image Spotlight (High fidelity look) */}
-          <div className="md:w-1/2 p-6 md:p-10 flex flex-col justify-between bg-neutral-50 dark:bg-neutral-950 border-r border-neutral-200/50 dark:border-neutral-800/50 h-[40%] md:h-full relative overflow-hidden">
-            {/* Visual background atmospheric lights in dark mode */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/10 dark:bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-            
-            <div className="flex justify-between items-center relative z-10">
-              <span className="text-xs font-semibold tracking-wider text-neutral-400 uppercase bg-neutral-200/50 dark:bg-neutral-800 px-3 py-1 rounded-full">
+          {/* Left: Immersive Image Gallery Area */}
+          <div className="md:w-1/2 relative bg-neutral-100 dark:bg-neutral-950 flex flex-col justify-center overflow-hidden min-h-[40vh] md:min-h-0">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent z-10 point-events-none mix-blend-multiply dark:mix-blend-normal" />
+            <div className="absolute top-6 left-6 z-20 flex items-center gap-3">
+              <span className="font-sans text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full bg-white/50 dark:bg-black/50 backdrop-blur-md text-black dark:text-white">
                 {product.category}
               </span>
-              <button 
-                onClick={handleShare}
-                className="flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-all bg-white dark:bg-neutral-900 px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-800"
-              >
-                {copied ? <Check size={12} className="text-emerald-500" /> : <Share2 size={12} />}
-                <span>{copied ? 'Copié !' : 'Partager'}</span>
+              <button onClick={handleShare} className="w-8 h-8 rounded-full bg-white/50 dark:bg-black/50 backdrop-blur-md flex items-center justify-center text-black dark:text-white hover:bg-white dark:hover:bg-black transition-colors">
+                {copied ? <Check size={14} /> : <Share2 size={14} />}
               </button>
             </div>
 
-            {/* Main spotlight product image */}
-            <div className="flex-1 flex items-center justify-center p-4 relative z-10 transition-transform duration-500 hover:scale-105">
-              <img 
-                src={product.imageUrl} 
-                alt={product.name} 
-                className="max-h-[220px] md:max-h-[350px] w-auto object-contain filter drop-shadow-2xl" 
-                referrerPolicy="no-referrer"
-              />
-            </div>
-
-            {/* Tags overlay inside images section */}
-            <div className="flex flex-wrap gap-2 relative z-10 mt-auto">
-              <span className="bg-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1">
-                <Award size={13} /> Certifié Authentique
-              </span>
-              {product.batteryHealth && (
-                <span className={`text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1 ${product.batteryHealth >= 90 ? 'bg-emerald-600' : 'bg-blue-600'}`}>
-                  <Battery size={13} /> {product.isNew || product.condition === 'Neuf' ? '100%' : `${product.batteryHealth}%`} Santé Batterie
-                </span>
-              )}
-              <span className="bg-neutral-900 dark:bg-neutral-800 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm">
-                {product.isNew || product.condition === 'Neuf' ? '✨ Neuf' : `Grade ${product.condition}`}
-              </span>
-            </div>
+            <motion.img 
+              initial={{ scale: 1.1, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              src={product.imageUrl || "https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=800"} 
+              alt={product.name} 
+              className="w-full h-full object-contain p-12 md:p-24 mix-blend-multiply dark:mix-blend-normal z-10" 
+            />
           </div>
 
-          {/* Right Column: Detailed parameters & interaction panel */}
-          <div className="md:w-1/2 flex flex-col h-[60%] md:h-full">
-            {/* Scrollable details container */}
-            <div className="flex-1 overflow-y-auto p-6 md:p-10 space-y-6">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-white mb-2">
-                  {product.name}
-                </h2>
-                
-                <div className="flex items-baseline gap-3">
-                  <span className="text-2xl md:text-3xl font-black text-neutral-900 dark:text-white">
-                    {product.price.toLocaleString()} FCFA
-                  </span>
-                  <span className="bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold px-2 py-1 rounded-md">
-                    En Stock
+          {/* Right: Premium Editorial Information */}
+          <div className="md:w-1/2 flex flex-col bg-ivory dark:bg-neutral-900 relative">
+            <div className="flex-1 overflow-y-auto px-8 md:px-16 pt-12 md:pt-16 pb-32">
+              <span className="font-sans text-xs tracking-widest uppercase text-neutral-400 mb-4 block">Édition Premium</span>
+              <h1 className="font-serif text-4xl md:text-5xl text-neutral-900 dark:text-white mb-6">
+                {product.name}
+              </h1>
+              
+              <div className="flex items-center gap-6 mb-12">
+                <span className="font-sans text-3xl font-light tracking-tight text-neutral-900 dark:text-white">
+                  {product.price.toLocaleString('fr-FR')} FCFA
+                </span>
+                <span className="font-sans text-xs uppercase tracking-widest px-3 py-1 border border-neutral-300 dark:border-neutral-700 rounded-full text-neutral-500">
+                  En Stock
+                </span>
+              </div>
+
+              {/* Data Grid */}
+              <div className="grid grid-cols-2 gap-px bg-neutral-200 dark:bg-neutral-800 rounded-2xl overflow-hidden mb-12">
+                <div className="bg-ivory dark:bg-neutral-900 p-6">
+                  <span className="block font-sans text-xs uppercase tracking-widest text-neutral-400 mb-2">Stockage</span>
+                  <span className="font-sans text-lg text-black dark:text-white">{product.storage || 'Standard'}</span>
+                </div>
+                <div className="bg-ivory dark:bg-neutral-900 p-6">
+                  <span className="block font-sans text-xs uppercase tracking-widest text-neutral-400 mb-2">Santé Batterie</span>
+                  <span className="font-sans text-lg text-black dark:text-white">{product.batteryHealth ? `${product.batteryHealth}%` : 'Vérifiée'}</span>
+                </div>
+                <div className="bg-ivory dark:bg-neutral-900 p-6">
+                  <span className="block font-sans text-xs uppercase tracking-widest text-neutral-400 mb-2">État</span>
+                  <span className="font-sans text-lg text-black dark:text-white">{product.condition === 'Neuf' || product.isNew ? 'Neuf' : `Grade ${product.condition}`}</span>
+                </div>
+                <div className="bg-ivory dark:bg-neutral-900 p-6">
+                  <span className="block font-sans text-xs uppercase tracking-widest text-neutral-400 mb-2">Authenticité</span>
+                  <span className="font-sans text-lg text-black dark:text-white flex items-center gap-2">
+                    Certifié <Award size={16} className="text-luxury-accent" />
                   </span>
                 </div>
               </div>
 
-              {/* Dynamic Storage & Color specifications */}
-              <div className="grid grid-cols-2 gap-4 bg-neutral-50 dark:bg-neutral-950 p-4 rounded-2xl border border-neutral-200/60 dark:border-neutral-800/60">
-                <div className="space-y-0.5">
-                  <span className="text-xs text-neutral-500 block">Stockage</span>
-                  <span className="text-sm font-bold text-neutral-800 dark:text-neutral-200 block">{product.storage || 'Non spécifié'}</span>
-                </div>
-                <div className="space-y-0.5">
-                  <span className="text-xs text-neutral-500 block">Santé Batterie</span>
-                  <span className="text-sm font-bold text-neutral-800 dark:text-neutral-200 block">
-                    {product.batteryHealth}% {product.batteryHealth >= 95 ? '(Exceptionnel)' : product.batteryHealth >= 90 ? '(Excellent)' : '(Optimal)'}
-                  </span>
-                </div>
+              {/* Minimal Tabs */}
+              <div className="flex gap-8 border-b border-neutral-200 dark:border-neutral-800 mb-8">
+                {['specs', 'condition', 'guarantees'].map((t) => (
+                  <button 
+                    key={t}
+                    onClick={() => setActiveTab(t as any)}
+                    className={`pb-4 font-sans text-sm tracking-wide relative transition-colors ${activeTab === t ? 'text-black dark:text-white' : 'text-neutral-400'}`}
+                  >
+                    {t === 'specs' ? 'Spécifications' : t === 'condition' ? 'Grade' : 'Garanties'}
+                    {activeTab === t && (
+                      <motion.div layoutId="detailTabs" className="absolute bottom-0 left-0 right-0 h-px bg-black dark:bg-white" />
+                    )}
+                  </button>
+                ))}
               </div>
 
-              {/* Specs and interactive glossary navigation tab selection */}
-              <div className="border-b border-neutral-200 dark:border-neutral-800 flex gap-4">
-                <button 
-                  onClick={() => setActiveTab('specs')}
-                  className={`pb-3 text-sm font-bold transition-all relative ${activeTab === 'specs' ? 'text-neutral-900 dark:text-white' : 'text-neutral-500 hover:text-neutral-700'}`}
-                >
-                  Caractéristiques
-                  {activeTab === 'specs' && <motion.div layoutId="modal_tab_indicator" className="absolute bottom-0 left-0 right-0 h-0.5 bg-neutral-900 dark:bg-white" />}
-                </button>
-                <button 
-                  onClick={() => setActiveTab('condition')}
-                  className={`pb-3 text-sm font-bold transition-all relative ${activeTab === 'condition' ? 'text-neutral-900 dark:text-white' : 'text-neutral-500 hover:text-neutral-700'}`}
-                >
-                  {product.isNew || product.condition === 'Neuf' ? 'État Neuf' : `Détail du Grade (${product.condition})`}
-                  {activeTab === 'condition' && <motion.div layoutId="modal_tab_indicator" className="absolute bottom-0 left-0 right-0 h-0.5 bg-neutral-900 dark:bg-white" />}
-                </button>
-                <button 
-                  onClick={() => setActiveTab('guarantees')}
-                  className={`pb-3 text-sm font-bold transition-all relative ${activeTab === 'guarantees' ? 'text-neutral-900 dark:text-white' : 'text-neutral-500 hover:text-neutral-700'}`}
-                >
-                  Garanties & Confiance
-                  {activeTab === 'guarantees' && <motion.div layoutId="modal_tab_indicator" className="absolute bottom-0 left-0 right-0 h-0.5 bg-neutral-900 dark:bg-white" />}
-                </button>
-              </div>
-
-              {/* Dynamic Tab Content rendering */}
-              <div className="min-h-[140px]">
-                {activeTab === 'specs' && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-                  >
-                    <div className="flex items-start gap-2.5">
-                      <Cpu size={16} className="text-neutral-400 mt-1 flex-shrink-0" />
-                      <div>
-                        <span className="text-xs text-neutral-400 block font-medium">Processeur</span>
-                        <span className="text-sm font-semibold">{specs.processor}</span>
+              {/* Tab Content */}
+              <div className="min-h-[160px]">
+                <AnimatePresence mode="wait">
+                  {activeTab === 'specs' && (
+                    <motion.div key="specs" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-6">
+                      <div className="flex justify-between border-b border-black/5 dark:border-white/5 pb-4">
+                        <span className="font-sans text-sm text-neutral-500">Processeur</span>
+                        <span className="font-sans text-sm text-black dark:text-white">{specs.processor}</span>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-2.5">
-                      <Compass size={16} className="text-neutral-400 mt-1 flex-shrink-0" />
-                      <div>
-                        <span className="text-xs text-neutral-400 block font-medium">Écran</span>
-                        <span className="text-sm font-semibold">{specs.screen}</span>
+                      <div className="flex justify-between border-b border-black/5 dark:border-white/5 pb-4">
+                        <span className="font-sans text-sm text-neutral-500">Écran</span>
+                        <span className="font-sans text-sm text-black dark:text-white">{specs.screen}</span>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-2.5">
-                      <Sparkles size={16} className="text-neutral-400 mt-1 flex-shrink-0" />
-                      <div>
-                        <span className="text-xs text-neutral-400 block font-medium">Module Photo</span>
-                        <span className="text-sm font-semibold">{specs.camera}</span>
+                      <div className="flex justify-between border-b border-black/5 dark:border-white/5 pb-4">
+                        <span className="font-sans text-sm text-neutral-500">Caméra</span>
+                        <span className="font-sans text-sm text-black dark:text-white">{specs.camera}</span>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-2.5">
-                      <Zap size={16} className="text-neutral-400 mt-1 flex-shrink-0" />
-                      <div>
-                        <span className="text-xs text-neutral-400 block font-medium">Réseau & SIM</span>
-                        <span className="text-sm font-semibold">{specs.network}</span>
+                    </motion.div>
+                  )}
+                  {activeTab === 'condition' && (
+                    <motion.div key="cond" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
+                      <h4 className="font-serif text-xl text-black dark:text-white">{conditionInfo.title}</h4>
+                      <p className="font-sans text-sm text-neutral-500 leading-relaxed max-w-sm">{conditionInfo.desc}</p>
+                    </motion.div>
+                  )}
+                  {activeTab === 'guarantees' && (
+                    <motion.div key="guar" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="space-y-4">
+                      <div className="flex items-center gap-4 text-sm text-neutral-500">
+                        <Shield size={16} className="text-black dark:text-white" />
+                        <span>Garantie 6 mois incluse.</span>
                       </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {activeTab === 'condition' && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-4"
-                  >
-                    <div className="flex items-center gap-3 bg-neutral-50 dark:bg-neutral-950 p-4 rounded-xl border border-neutral-200/50 dark:border-neutral-800/50">
-                      <div className="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 font-extrabold text-xl">
-                        {product.condition}
+                      <div className="flex items-center gap-4 text-sm text-neutral-500">
+                        <Check size={16} className="text-black dark:text-white" />
+                        <span>Inspection technique sur 45 points métiers.</span>
                       </div>
-                      <div>
-                        <span className="text-xs text-neutral-400 block font-medium">Classification esthétique</span>
-                        <span className="font-bold text-neutral-900 dark:text-white text-base">État {conditionInfo.title}</span>
-                      </div>
-                    </div>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
-                      {conditionInfo.description}
-                    </p>
-                    <div className="flex items-center gap-1 text-xs text-neutral-500 dark:text-neutral-400">
-                      <AlertCircle size={14} className="text-amber-500" />
-                      <span>Tous nos appareils sont débloqués iCloud/Google et compatibles avec tous les opérateurs mondiaux.</span>
-                    </div>
-                  </motion.div>
-                )}
-
-                {activeTab === 'guarantees' && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-3 text-sm text-neutral-600 dark:text-neutral-300"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div className="p-1 rounded bg-emerald-500/10 text-emerald-500">
-                        <Check size={14} />
-                      </div>
-                      <span className="font-medium">Test technique approfondi sur 45 points (Tactile, micro, objectifs, charge...)</span>
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <div className="p-1 rounded bg-emerald-500/10 text-emerald-500">
-                        <Check size={14} />
-                      </div>
-                      <span className="font-medium">Garantie réparation / remplacement de 6 mois incluse d'office</span>
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <div className="p-1 rounded bg-emerald-500/10 text-emerald-500">
-                        <Check size={14} />
-                      </div>
-                      <span className="font-medium">Livraison sécurisée avec vérification sur place avant paiement direct</span>
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <div className="p-1 rounded bg-emerald-500/10 text-emerald-500">
-                        <Check size={14} />
-                      </div>
-                      <span className="font-medium">Service de reprise / échange disponible en boutique</span>
-                    </div>
-                  </motion.div>
-                )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 
-            {/* Bottom Panel Actions */}
-            <div className="p-6 md:p-8 bg-neutral-50 dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-800/60 flex flex-col sm:flex-row gap-3">
+            {/* Sticky Purchase Panel */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 bg-ivory/80 dark:bg-neutral-900/80 backdrop-blur-2xl border-t border-black/5 dark:border-white/5 flex gap-4">
               <button
                 onClick={handleAddToCart}
-                id="modal_add_to_cart_btn"
-                className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-sm tracking-wide transition-all ${addedDirectly ? 'bg-emerald-600 text-white' : 'bg-neutral-900 hover:bg-black dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-neutral-900'} active:scale-95 cursor-pointer shadow-md`}
+                className="flex-1 bg-black dark:bg-white text-white dark:text-black font-sans font-medium py-4 rounded-xl shadow-xl hover:scale-[1.02] transition-transform flex items-center justify-center gap-2"
               >
-                {addedDirectly ? (
-                  <>
-                    <Check size={18} />
-                    <span>Ajouté au panier !</span>
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag size={18} />
-                    <span>Ajouter au panier</span>
-                  </>
-                )}
+                {addedDirectly ? <Check size={18} /> : 'Ajouter au panier'}
               </button>
-
               <a
                 href={getWhatsAppLink()}
                 target="_blank"
                 rel="noreferrer"
-                id="modal_whatsapp_reserve_link"
-                className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm tracking-wide py-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-95 text-center"
+                className="w-16 h-16 flex-shrink-0 bg-emerald-500 hover:bg-emerald-600 rounded-xl flex items-center justify-center shadow-xl hover:scale-[1.02] transition-transform text-white"
+                title="Commander via WhatsApp"
               >
-                <Send size={18} className="fill-white" />
-                <span>Réserver par WhatsApp</span>
+                <Send size={20} />
               </a>
             </div>
           </div>
